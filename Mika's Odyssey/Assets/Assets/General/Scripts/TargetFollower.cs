@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class FollowTarget : MonoBehaviour
 {
+
+    // adapt to follow player
     [SerializeField] private GameObject target;
 
     private void LateUpdate() // LateUpdate to make sure it follows after target has moved
