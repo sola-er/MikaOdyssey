@@ -11,23 +11,20 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
     [Header("Deplacement")]
     public float speed = 10f;
     public float groundDrag = 5f;
-    public float jump = 1f;
+    public float jump = 5f;
+    public int jumpCount = 1;
 
     [SerializeField]
     KeyCode jumpCode = KeyCode.Space;
     [SerializeField]
     KeyCode Sprinter = KeyCode.LeftShift;
 
-
-
-
-
     [Header("Others")]
     public float pHeight;
     public LayerMask whatIsGround;
     bool grounded;
 
-    public Transform orientation;
+    public Transform orientation; // might be able to remove it, check where orientation is used
 
     private float horizontalInput;
     private float verticalInput;
@@ -46,7 +43,7 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(jumpCode) && grounded)
+        if (Input.GetKeyDown(jumpCode) && grounded && jumpCount <= 0)
         {
             Jump();
         }
@@ -79,9 +76,12 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
     {
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(transform.up * jump, ForceMode.Impulse);
+        jumpCount--;
+        if (grounded)
+            jumpCount = 1;
     }
 
-    private void PlayerMove()
+    private void PlayerMove() // im pretty sure if we put the player's transform into the orientation, we should be fine regardless,
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
         if (grounded)
