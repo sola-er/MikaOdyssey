@@ -12,6 +12,8 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
     public float speed = 10f;
     public float groundDrag = 5f;
     public float jumpHeight = 7f;
+    public float rotationSpeed = 5f;
+    public float sprintSpeed = 30f;
 
     public int additionalJumpCount = 1;
 
@@ -69,6 +71,12 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
         {
             rb.linearDamping = 0;
         }
+        
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
         SpeedLimit();
         Sprint();
     }
@@ -113,7 +121,7 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
     {
         if (Input.GetKey(Sprinter))
         {
-            rb.AddForce(moveDirection.normalized * speed * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * speed * sprintSpeed, ForceMode.Force);
         }
     }
 
