@@ -72,7 +72,7 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
             rb.linearDamping = 0;
         }
         
-        if (moveDirection != Vector3.zero)
+        if (moveDirection != Vector3.zero) // we need to tweak this
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -106,7 +106,7 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
 
     }
 
-    private void SpeedLimit() // I think we need to modify this,
+    private void SpeedLimit() 
     {
         Vector3 maxVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
@@ -117,7 +117,7 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
         }
     }
 
-    private void Sprint() // doesnt really work, probably beacause of the speed limiter
+    private void Sprint() // the sprint speed value needs to be 30+ to be able to work properly
     {
         if (Input.GetKey(Sprinter))
         {
