@@ -11,8 +11,9 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
     [Header("Deplacement")]
     public float speed = 10f;
     public float groundDrag = 5f;
-    public float jump = 5f;
-    public int jumpCount = 1;
+    public float jumpHeight = 7f;
+
+    public int additionalJumpCount = 1;
 
     [SerializeField]
     KeyCode jumpCode = KeyCode.Space;
@@ -20,7 +21,7 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
     KeyCode Sprinter = KeyCode.LeftShift;
 
     [Header("Others")]
-    public float pHeight;
+    public float playerHeight = 2;
     public LayerMask whatIsGround;
     bool grounded;
 
@@ -33,6 +34,9 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
 
     Rigidbody rb;
 
+    int jumpCount;
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -43,9 +47,10 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(jumpCode) && grounded && jumpCount <= 0)
+        if (Input.GetKeyDown(jumpCode) && jumpCount > 0)
         {
             Jump();
+            
         }
 
 
@@ -53,11 +58,12 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
 
     private void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, pHeight * 0.5f + 0.2f, whatIsGround);
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
         Inputs();
         if (grounded)
         {
             rb.linearDamping = groundDrag;
+                jumpCount = additionalJumpCount;
         }
         else
         {
@@ -75,10 +81,9 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
     private void Jump()
     {
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        rb.AddForce(transform.up * jump, ForceMode.Impulse);
+        rb.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
         jumpCount--;
-        if (grounded)
-            jumpCount = 1;
+        
     }
 
     private void PlayerMove() // im pretty sure if we put the player's transform into the orientation, we should be fine regardless,
@@ -93,7 +98,7 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
 
     }
 
-    private void SpeedLimit()
+    private void SpeedLimit() // I think we need to modify this,
     {
         Vector3 maxVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
