@@ -13,22 +13,33 @@ public class MovementWithGravity : MonoBehaviour
     [SerializeField, Range(0, 5)] int maxAirJumps = 0;
 
     [SerializeField, Range(0f, 90f)]
-    float maxGroundAngle = 25f;
+    float maxGroundAngle = 25f, maxStairsAngle = 50f;
+
+    [SerializeField, Range(0f, 100f)] float maxSnapSpeed = 100f;
+
+    [SerializeField, Min(0f)] float probeDistance = 1f;
+
+    [SerializeField] 
+    LayerMask probeMask = -1, stairsMask = -1;
 
     private Vector3 velocity, desiredVelocity;
     Rigidbody rb;
     bool desiredJump;
 
-    int groundContactCount; // could be boolean and still work, but this gives more info
+    int groundContactCount, steepContactCount; // could be boolean and still work, but this gives more info
     bool OnGround => groundContactCount > 0;
 
+    bool OnSteep => steepContactCount > 0;
+
     int jumpPhase;
-    float minGroundDotProduct;
-    Vector3 contactNormal;
+    float minGroundDotProduct, minStairsDotProduct;
+    Vector3 contactNormal, steepNormal;
+    int stepsSinceLastGrounded, stepsSinceLastJump;
 
     void OnValidate()
     {
         minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
+        minStairsDotProduct = Mathf.Cos(maxStairsAngle * Mathf.Deg2Rad);
     }
 
     void Awake()
@@ -65,16 +76,20 @@ public class MovementWithGravity : MonoBehaviour
     }
     void ClearState()
     {
-        groundContactCount = 0;
-        contactNormal = Vector3.zero;
+        groundContactCount = steepContactCount = 0;
+        contactNormal = steepNormal = Vector3.zero; // 2 = ok?
     }
 
     private void UpdateState()
     {
+        stepsSinceLastGrounded += 1;
+        stepsSinceLastJump += 1;
         velocity = rb.linearVelocity;
-        if (OnGround)
+        if (OnGround || SnapToGround() || CheckSteepContacts()) // snap only gets called when OnGround is false
         {
-            jumpPhase = 0;
+            stepsSinceLastGrounded = 0;
+            if (stepsSinceLastJump > 1)
+                jumpPhase = 0;
             if (groundContactCount > 1)
             {
                 contactNormal.Normalize();
@@ -86,18 +101,39 @@ public class MovementWithGravity : MonoBehaviour
 
     private void Jump()
     {
-        if (OnGround || jumpPhase < maxAirJumps)
+        // enables regular, crevice and wall jumping. each if is a check for the situation
+        Vector3 jumpDirection;
+        if (OnGround)
         {
-            jumpPhase += 1;
-            float jumpSpeed = Mathf.Sqrt(-2f * Physics.gravity.y * jumpHeight);
-            float alignedSpeed = Vector3.Dot(velocity, contactNormal);
-            if (alignedSpeed > 0f)
-            {
-                jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
-            }
-            velocity += contactNormal * jumpSpeed;
+            jumpDirection = contactNormal;
         }
-            // derive manually to better understand
+        else if (OnSteep)
+        {
+            jumpDirection = steepNormal;
+            jumpPhase = 0;
+        }
+        else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
+        {
+            if (jumpPhase == 0)
+                jumpPhase = 1;
+            jumpDirection = contactNormal;
+        }
+        else
+        {
+            return;
+        }
+        stepsSinceLastJump = 0;
+        jumpPhase += 1;
+        float jumpSpeed = Mathf.Sqrt(-2f * Physics.gravity.y * jumpHeight);
+        jumpDirection = (jumpDirection + Vector3.up).normalized;
+
+        float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+        if (alignedSpeed > 0f)
+        {
+            jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+        }
+        velocity += jumpDirection * jumpSpeed;
+        // derive manually to better understand
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -110,15 +146,21 @@ public class MovementWithGravity : MonoBehaviour
     }
     private void EvaluateCollision(Collision collision)
     {
+        float minDot = GetMinDot(collision.gameObject.layer);
         for (int i = 0; i != collision.contactCount; ++i)
         {
             Vector3 normal = collision.GetContact(i).normal;
-            if (normal.y >= minGroundDotProduct)
+            if (normal.y >= minDot)
             {
                 groundContactCount += 1;
                 contactNormal += normal;
             }
-             // accumulating normals then averaging them to deal w multiple contact points 
+            // accumulating normals then averaging them to deal w multiple contact points 
+            else if (normal.y > -0.01f)
+            {
+                steepContactCount += 1;
+                steepNormal += normal;
+            }
         }
     }
     Vector3 ProjectOnContactPlane(Vector3 vector) // project movemnt on the plane instead of straight line that causes issues when going downhill
@@ -143,5 +185,50 @@ public class MovementWithGravity : MonoBehaviour
             Mathf.MoveTowards(currentZ, desiredVelocity.z, maxSpeedChange);
 
         velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
+    }
+    bool SnapToGround()
+    {
+        if (stepsSinceLastGrounded > 1 || stepsSinceLastJump <= 2)
+        {
+            return false; //only snap once after losing contact with ground 
+        }
+        float speed = velocity.magnitude;
+        if (speed > maxSnapSpeed)
+            return false;
+
+        if(!Physics.Raycast(
+            rb.position, Vector3.down, out RaycastHit hit, 
+            probeDistance, probeMask)) 
+            // is there ground below? + close enough? + is part of background?
+            return false;
+
+        if (hit.normal.y < GetMinDot(hit.collider.gameObject.layer))
+            return false;
+
+        groundContactCount = 1;
+        contactNormal = hit.normal;
+        float dot = Vector3.Dot(velocity, hit.normal);
+        if (dot > 0f)
+            velocity = (velocity - hit.normal * dot).normalized * speed;
+        return true;
+    }
+
+    float GetMinDot (int layer)
+    {
+        return (stairsMask & (1 << layer)) == 0 ? minGroundDotProduct : minStairsDotProduct;
+    }
+    bool CheckSteepContacts()
+    {
+        if (steepContactCount > 1)
+        {
+            steepNormal.Normalize();
+            if (steepNormal.y >= minGroundDotProduct)
+            {
+                groundContactCount = 1;
+                contactNormal = steepNormal;
+                return true;
+            }
+        }
+        return false;
     }
 }
