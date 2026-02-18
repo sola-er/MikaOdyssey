@@ -12,15 +12,29 @@ public class MovementWithGravity : MonoBehaviour
 
     [SerializeField, Range(0, 5)] int maxAirJumps = 0;
 
+    [SerializeField, Range(0f, 90f)]
+    float maxGroundAngle = 25f;
+
     private Vector3 velocity, desiredVelocity;
     Rigidbody rb;
     bool desiredJump;
-    bool onGround;
+
+    int groundContactCount; // could be boolean and still work, but this gives more info
+    bool OnGround => groundContactCount > 0;
+
     int jumpPhase;
+    float minGroundDotProduct;
+    Vector3 contactNormal;
+
+    void OnValidate()
+    {
+        minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
+    }
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        OnValidate();
     }
     void Update()
     {
@@ -37,12 +51,7 @@ public class MovementWithGravity : MonoBehaviour
     {
         UpdateState();
 
-        float acceleration = onGround ? maxAcceleration : maxAirAcceleration;
-        float maxSpeedChange = acceleration * Time.deltaTime;
-        velocity.x =
-            Mathf.MoveTowards(velocity.x, desiredVelocity.x, maxSpeedChange);
-        velocity.z =
-            Mathf.MoveTowards(velocity.z, desiredVelocity.z, maxSpeedChange);
+        AdjustVelocity();
 
         if (desiredJump)
         {
@@ -52,27 +61,41 @@ public class MovementWithGravity : MonoBehaviour
 
         rb.linearVelocity = velocity;
 
-        onGround = false;
+        ClearState();
+    }
+    void ClearState()
+    {
+        groundContactCount = 0;
+        contactNormal = Vector3.zero;
     }
 
     private void UpdateState()
     {
         velocity = rb.linearVelocity;
-        if(onGround)
+        if (OnGround)
+        {
             jumpPhase = 0;
+            if (groundContactCount > 1)
+            {
+                contactNormal.Normalize();
+            }
+        }
+        else
+            contactNormal = Vector3.up;
     }
 
     private void Jump()
     {
-        if (onGround || jumpPhase < maxAirJumps)
+        if (OnGround || jumpPhase < maxAirJumps)
         {
             jumpPhase += 1;
             float jumpSpeed = Mathf.Sqrt(-2f * Physics.gravity.y * jumpHeight);
-            if (jumpSpeed > 0f)
+            float alignedSpeed = Vector3.Dot(velocity, contactNormal);
+            if (alignedSpeed > 0f)
             {
-                jumpSpeed = Mathf.Max(jumpSpeed - velocity.y, 0f);
+                jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
             }
-            velocity.y += jumpSpeed;
+            velocity += contactNormal * jumpSpeed;
         }
             // derive manually to better understand
     }
@@ -87,10 +110,38 @@ public class MovementWithGravity : MonoBehaviour
     }
     private void EvaluateCollision(Collision collision)
     {
-        for(int i=0; i!= collision.contactCount; ++i)
+        for (int i = 0; i != collision.contactCount; ++i)
         {
             Vector3 normal = collision.GetContact(i).normal;
-            onGround |= normal.y > 0.9f;
+            if (normal.y >= minGroundDotProduct)
+            {
+                groundContactCount += 1;
+                contactNormal += normal;
+            }
+             // accumulating normals then averaging them to deal w multiple contact points 
         }
+    }
+    Vector3 ProjectOnContactPlane(Vector3 vector) // project movemnt on the plane instead of straight line that causes issues when going downhill
+    {
+        return vector - contactNormal * Vector3.Dot(vector, contactNormal);
+        // could use Vector3.ProjectOnPlane instead but it'd try to normalize again when its not needed
+    }
+    void AdjustVelocity()
+    {
+        Vector3 xAxis = ProjectOnContactPlane(Vector3.right).normalized;
+        Vector3 zAxis = ProjectOnContactPlane(Vector3.forward).normalized;
+
+        float currentX = Vector3.Dot(velocity, xAxis);
+        float currentZ = Vector3.Dot(velocity, zAxis);
+
+        float acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
+        float maxSpeedChange = acceleration * Time.deltaTime;
+
+        float newX =
+            Mathf.MoveTowards(currentX, desiredVelocity.x, maxSpeedChange);
+        float newZ =
+            Mathf.MoveTowards(currentZ, desiredVelocity.z, maxSpeedChange);
+
+        velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
     }
 }
