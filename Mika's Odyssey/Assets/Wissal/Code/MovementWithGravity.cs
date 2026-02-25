@@ -71,7 +71,6 @@ public class MovementWithGravity : MonoBehaviour
             forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
         }
         desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
-
         desiredJump |= Input.GetButtonDown("Jump");
     }
     private void FixedUpdate()

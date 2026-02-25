@@ -257,11 +257,11 @@ MonoBehaviour:
   probeDistance: 1
   probeMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 539
   stairsMask:
     serializedVersion: 2
-    m_Bits: 4294967295
-  playerInputSpace: {fileID: 0}
+    m_Bits: 1024
+  playerInputSpace: {fileID: 1765561843}
 --- !u!54 &113890556
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -509,7 +509,7 @@ MonoBehaviour:
   distance: 5
   focusRadius: 1
   focusCentering: 0.5
-  rotationSpeed: 13
+  rotationSpeed: 40
 --- !u!114 &1765561845
 MonoBehaviour:
   m_ObjectHideFlags: 0

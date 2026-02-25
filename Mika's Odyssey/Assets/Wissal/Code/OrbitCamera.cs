@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+// to add later: mouse based input, new input manager, automatic alignment, angle limits, handle collisions
 [RequireComponent(typeof(Camera))]
 public class OrbitCamera : MonoBehaviour
 {
@@ -15,17 +17,22 @@ public class OrbitCamera : MonoBehaviour
 
     Vector3 focusPoint;
     Vector2 orbitAngles = new Vector2(45f, 0f);
+    Quaternion gravityAlignment = Quaternion.identity;
+    Quaternion orbitRotation;
 
     private void Awake()
     {
         focusPoint = focus.position;
+        transform.localRotation = orbitRotation = Quaternion.Euler(orbitAngles);
     }
 
     private void LateUpdate()
     {
+        gravityAlignment = Quaternion.FromToRotation(gravityAlignment * Vector3.up, -Physics.gravity.normalized) * gravityAlignment;
         UpdateFocusPoint();
         ManualRotation();
-        Quaternion lookRotation = Quaternion.Euler(orbitAngles);
+        orbitRotation = Quaternion.Euler(orbitAngles);
+        Quaternion lookRotation = gravityAlignment * orbitRotation;
         Vector3 lookDirection = lookRotation * Vector3.forward;
         Vector3 lookPosition = focusPoint - lookDirection * distance;
         transform.SetPositionAndRotation(lookPosition, lookRotation);
