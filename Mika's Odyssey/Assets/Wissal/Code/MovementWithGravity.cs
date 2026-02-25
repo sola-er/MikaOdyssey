@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -50,6 +51,7 @@ public class MovementWithGravity : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
         OnValidate();
     }
     void Update()
@@ -75,7 +77,7 @@ public class MovementWithGravity : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        upAxis = -Physics.gravity.normalized;
+        Vector3 gravity = CustomGravity.GetGravity(rb.position, out upAxis);
 
         UpdateState();
 
@@ -84,11 +86,11 @@ public class MovementWithGravity : MonoBehaviour
         if (desiredJump)
         {
             desiredJump = false;
-            Jump();
+            Jump(gravity);
         }
+        velocity += gravity * Time.deltaTime;
 
         rb.linearVelocity = velocity;
-
         ClearState();
     }
     void ClearState()
@@ -116,7 +118,7 @@ public class MovementWithGravity : MonoBehaviour
             contactNormal = upAxis;
     }
 
-    private void Jump()
+    private void Jump(Vector3 gravity)
     {
         // enables regular, crevice and wall jumping. each if is a check for the situation
         Vector3 jumpDirection;
@@ -141,7 +143,7 @@ public class MovementWithGravity : MonoBehaviour
         }
         stepsSinceLastJump = 0;
         jumpPhase += 1;
-        float jumpSpeed = Mathf.Sqrt(2f * Physics.gravity.magnitude * jumpHeight);
+        float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
         jumpDirection = (jumpDirection + upAxis).normalized;
 
         float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
