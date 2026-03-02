@@ -353,7 +353,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 25, y: 25, z: 25}
+  m_LocalScale: {x: 40.32, y: 40.32, z: 40.32}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -502,8 +502,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72558067ce3d8aa488418fff5e9e3c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementWithGravity
-  maxSpeed: 10
-  maxAcceleration: 10
+  maxSpeed: 15
+  maxAcceleration: 20
   maxAirAcceleration: 1
   jumpHeight: 2
   maxAirJumps: 0
@@ -632,7 +632,7 @@ Transform:
   m_GameObject: {fileID: 983776735}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 13, z: 0}
+  m_LocalPosition: {x: 0.12, y: 23.56, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
