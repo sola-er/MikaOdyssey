@@ -1,42 +1,40 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 public static class CustomGravity
 {
+    static List<GravitySource> sources = new List<GravitySource>();
     public static Vector3 GetGravity(Vector3 position)
     {
-        return position.normalized * Physics.gravity.y;
-    }
-    public static Vector3 GetUpAxis(Vector3 position)
-    {
-        Vector3 up = position.normalized;
-        return Physics.gravity.y < 0f ? up : -up;
+        Vector3 gravity = Vector3.zero;
+        for (int i = 0; i != sources.Count; ++i)
+            gravity += sources[i].GetGravity(position);
+        return gravity;
     }
     public static Vector3 GetGravity(Vector3 position, out Vector3 upAxis)
     {
-        Vector3 up = position.normalized;
-        upAxis = Physics.gravity.y < 0f ? up : -up;
-        return up * Physics.gravity.y;
+        Vector3 gravity = Vector3.zero;
+        for (int i = 0; i != sources.Count; ++i)
+            gravity += sources[i].GetGravity(position);
+        upAxis = -gravity.normalized;
+        return gravity;
+    }
+    public static Vector3 GetUpAxis(Vector3 position)
+    {
+        Vector3 gravity = Vector3.zero;
+        for (int i = 0; i != sources.Count; ++i)
+            gravity += sources[i].GetGravity(position);
+        return -gravity.normalized;
+    }
+    public static void Register (GravitySource source)
+    {
+        Debug.Assert(!sources.Contains(source), "This source is already registered!", source);
+        sources.Add(source);
+    }
+    public static void Unregister (GravitySource source)
+    {
+        Debug.Assert(sources.Contains(source), "This source isn't registered!", source);
+        sources.Remove(source);
     }
 }
-
-// for flat gravity:
-//using UnityEngine;
-
-//public static class CustomGravity
-//{
-//    public static Vector3 GetGravity(Vector3 position)
-//    {
-//        return Physics.gravity;
-//    }
-
-//    public static Vector3 GetUpAxis(Vector3 position)
-//    {
-//        return Vector3.up;
-//    }
-
-//    public static Vector3 GetGravity(Vector3 position, out Vector3 upAxis)
-//    {
-//        upAxis = Vector3.up;
-//        return Physics.gravity;
-//    }
-//}

@@ -279,6 +279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5d69dd26e578f47aee76a4ef7aeb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomGravityRigidBody
+  floatToSleep: 0
 --- !u!54 &288009294
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -432,6 +433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5d69dd26e578f47aee76a4ef7aeb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomGravityRigidBody
+  floatToSleep: 0
 --- !u!54 &288886653
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -564,6 +566,7 @@ GameObject:
   - component: {fileID: 507073599}
   - component: {fileID: 507073598}
   - component: {fileID: 507073597}
+  - component: {fileID: 507073601}
   m_Layer: 3
   m_Name: Planet
   m_TagString: Untagged
@@ -664,6 +667,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &507073601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507073596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b098f8bcb9c15948879e0751ad4a90b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GravitySource
 --- !u!1 &983776735
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,7 +823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72558067ce3d8aa488418fff5e9e3c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementWithGravity
-  maxSpeed: 15
+  maxSpeed: 10
   maxAcceleration: 53.2
   maxAirAcceleration: 1
   jumpHeight: 2
@@ -977,6 +992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5d69dd26e578f47aee76a4ef7aeb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomGravityRigidBody
+  floatToSleep: 0
 --- !u!54 &1363829869
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1208,6 +1224,7 @@ MonoBehaviour:
   focusRadius: 1
   focusCentering: 0.5
   rotationSpeed: 90
+  upAlignmentSpeed: 360
 --- !u!114 &1819657396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1285,6 +1302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5d69dd26e578f47aee76a4ef7aeb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomGravityRigidBody
+  floatToSleep: 0
 --- !u!54 &1955178706
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1438,6 +1456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5d69dd26e578f47aee76a4ef7aeb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomGravityRigidBody
+  floatToSleep: 0
 --- !u!54 &1986196301
 Rigidbody:
   m_ObjectHideFlags: 0
