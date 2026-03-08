@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5281440761a5fb4b9b7483739287817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityPlane
-  gravity: -9.81
+  gravity: 9.81
   range: 1
 --- !u!65 &263461672
 BoxCollider:
@@ -574,7 +574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5281440761a5fb4b9b7483739287817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityPlane
-  gravity: -9.81
+  gravity: 9.81
   range: 1
 --- !u!65 &772504189
 BoxCollider:
@@ -701,7 +701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5281440761a5fb4b9b7483739287817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityPlane
-  gravity: -9.81
+  gravity: 9.81
   range: 1
 --- !u!65 &1112972861
 BoxCollider:
@@ -984,7 +984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5281440761a5fb4b9b7483739287817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityPlane
-  gravity: -9.81
+  gravity: 9.81
   range: 1
 --- !u!65 &1521970410
 BoxCollider:

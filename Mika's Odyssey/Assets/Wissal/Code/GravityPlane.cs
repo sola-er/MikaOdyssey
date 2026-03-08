@@ -15,7 +15,7 @@ public class GravityPlane : GravitySource
         float g = -gravity;
         if (distance > 0f)
             g *= 1f - distance / range;
-        return -g * up;
+        return g * up;
     }
     private void OnDrawGizmos()
     {
