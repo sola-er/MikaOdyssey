@@ -12,6 +12,11 @@ public class Projection : MonoBehaviour // this is a made in progress, might not
     [SerializeField] private LineRenderer lineR;
     [SerializeField] private int maxPhysicsFrameIteration; // this will also be how far the ghost balls go, the less it is the less we will see in the future so less work in the end
 
+
+    private void Start()
+    {
+        CreatePhysicsScene();
+    }
     void CreatePhysicsScene()
     {
         simulationScene = SceneManager.CreateScene("Simulation", new CreateSceneParameters(LocalPhysicsMode.Physics3D));
@@ -36,7 +41,7 @@ public class Projection : MonoBehaviour // this is a made in progress, might not
         var ghostObj = Instantiate(ProjectillePrefb, pos, Quaternion.identity);
         SceneManager.MoveGameObjectToScene(ghostObj.gameObject, simulationScene); // probably best to put in a function
 
-        ghostObj.Init(velocity);
+        ghostObj.Init(velocity,true);
 
         lineR.positionCount = maxPhysicsFrameIteration;
 
