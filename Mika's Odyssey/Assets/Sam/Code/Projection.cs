@@ -9,6 +9,9 @@ public class Projection : MonoBehaviour // this is a made in progress, might not
     private PhysicsScene physicsScene;
     [SerializeField] private Transform obstaclesParent;
 
+    [SerializeField] private LineRenderer lineR;
+    [SerializeField] private int maxPhysicsFrameIteration; // this will also be how far the ghost balls go, the less it is the less we will see in the future so less work in the end
+
     void CreatePhysicsScene()
     {
         simulationScene = SceneManager.CreateScene("Simulation", new CreateSceneParameters(LocalPhysicsMode.Physics3D));
@@ -26,5 +29,22 @@ public class Projection : MonoBehaviour // this is a made in progress, might not
     void Update()
     {
         
+    }
+
+    public void TrajectorySimulation(Projectille ProjectillePrefb, Vector3 pos, Vector3 velocity)
+    {
+        var ghostObj = Instantiate(ProjectillePrefb, pos, Quaternion.identity);
+        SceneManager.MoveGameObjectToScene(ghostObj.gameObject, simulationScene); // probably best to put in a function
+
+        ghostObj.Init(velocity);
+
+        lineR.positionCount = maxPhysicsFrameIteration;
+
+        for (int i = 0; i < maxPhysicsFrameIteration; i++) // i need to add object pooling right here, else my computer will crash
+        {
+            physicsScene.Simulate(Time.fixedDeltaTime);
+            lineR.SetPosition(i,ghostObj.transform.position);
+        }
+        Destroy(ghostObj.gameObject);
     }
 }
