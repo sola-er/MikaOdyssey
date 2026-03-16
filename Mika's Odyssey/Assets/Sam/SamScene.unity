@@ -260,7 +260,6 @@ GameObject:
   - component: {fileID: 250788011}
   - component: {fileID: 250788015}
   - component: {fileID: 250788010}
-  - component: {fileID: 250788016}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -292,7 +291,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
-  orientation: {fileID: 1725469807}
+  orientation: {fileID: 1667900587}
 --- !u!136 &250788011
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -412,37 +411,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &250788016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 250788009}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72558067ce3d8aa488418fff5e9e3c93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MovementWithGravity
-  maxSpeed: 10
-  maxAcceleration: 10
-  maxAirAcceleration: 1
-  jumpHeight: 2
-  maxAirJumps: 0
-  maxGroundAngle: 25
-  maxStairsAngle: 50
-  maxSnapSpeed: 100
-  probeDistance: 1
-  probeMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  stairsMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  playerInputSpace: {fileID: 1667900587}
 --- !u!1 &454441618
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,6 +767,7 @@ GameObject:
   - component: {fileID: 1667900585}
   - component: {fileID: 1667900588}
   - component: {fileID: 1667900589}
+  - component: {fileID: 1667900590}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -844,7 +816,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -870,8 +842,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1667900584}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.2534013, y: 0.000000007779796, z: -0.0000000020379263, w: 0.9673613}
+  m_LocalPosition: {x: 0.35356, y: 3.2, z: -3.64644}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -928,7 +900,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1667900584}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e1d6ad139e52c84c809b80f57fab0f8, type: 3}
   m_Name: 
@@ -938,6 +910,39 @@ MonoBehaviour:
   focusRadius: 1
   focusCentering: 0.5
   rotationSpeed: 90
+  upAlignmentSpeed: 360
+--- !u!114 &1667900590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667900584}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBrain
+  ShowDebugText: 0
+  ShowCameraFrustum: 1
+  IgnoreTimeScale: 0
+  WorldUpOverride: {fileID: 0}
+  ChannelMask: -1
+  UpdateMethod: 2
+  BlendUpdateMethod: 1
+  LensModeOverride:
+    Enabled: 0
+    DefaultMode: 2
+  DefaultBlend:
+    Style: 1
+    Time: 2
+    CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  CustomBlends: {fileID: 0}
 --- !u!1 &1703782458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,7 +1245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Projection
   obstaclesParent: {fileID: 1286048530}
   lineR: {fileID: 2280576308614766184}
-  maxPhysicsFrameIteration: 100
+  maxPhysicsFrameIteration: 0
 --- !u!1001 &5200019470080443276
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1291,6 +1296,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 850749712473506893, guid: a8fa7aaa7d977f449bd62a21974aceb7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 933016606315181525, guid: a8fa7aaa7d977f449bd62a21974aceb7, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 933016606315181525, guid: a8fa7aaa7d977f449bd62a21974aceb7, type: 3}
