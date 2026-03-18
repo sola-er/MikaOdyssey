@@ -34,12 +34,14 @@ public class CannonShooting : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        canonON = true;
-        shootingKeycode = KeyCode.E;
+        
         if (Input.GetKeyDown(shootingKeycode))
         {
             var spawned = Instantiate(projectillePrefab, ProjectilleSpawn.position, ProjectilleSpawn.rotation);
             spawned.Init(ProjectilleSpawn.forward * shootForce, false);
         }
+        canonON = true;
+        shootingKeycode = KeyCode.E;
+        
     }
 }

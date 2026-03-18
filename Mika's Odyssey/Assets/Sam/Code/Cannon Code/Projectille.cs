@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class Projectille : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
+    private float Force;
+    private Vector3 direction;
     private bool _isGhost;
     //add audio and Effects if wanted
 
@@ -14,8 +16,14 @@ public class Projectille : MonoBehaviour
         rb.AddForce(velocity,ForceMode.Impulse);
     }
 
+
     public void OnCollisionEnter(Collision collision)
     {
         if (_isGhost) return;
+        //if (collision.gameObject.CompareTag("ForceZone"))
+        //{
+        //    Force = collision.gameObject.GetComponent<force>
+        //    rb.AddForce()
+        //}
     }
 }

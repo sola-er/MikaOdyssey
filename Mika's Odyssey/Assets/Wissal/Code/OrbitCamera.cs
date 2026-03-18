@@ -40,7 +40,7 @@ public class OrbitCamera : MonoBehaviour
         orbitRotation = Quaternion.Euler(orbitAngles);
         Quaternion lookRotation = gravityAlignment * orbitRotation;
         Vector3 lookDirection = lookRotation * Vector3.forward;
-        Vector3 lookPosition = focusPoint - lookDirection * distance;
+        Vector3 lookPosition = focusPoint - lookDirection * distance; // a ameliorer avec un tire de raycast
         transform.SetPositionAndRotation(lookPosition, lookRotation);
     }
 
@@ -87,6 +87,12 @@ public class OrbitCamera : MonoBehaviour
             Input.GetAxis("Mouse Y") * mouseSensitivity, Input.GetAxis("Mouse X") * mouseSensitivity);
         const float e = 0.001f;
         if (input.x < -e || input.x > e || input.y < -e || input.y > e)
+        {
             orbitAngles += rotationSpeed * Time.unscaledDeltaTime * input;
+            orbitAngles = new Vector2(Mathf.Clamp(orbitAngles.x, -89, 89), orbitAngles.y);
+           
+
+        }
+            
     }
 }
