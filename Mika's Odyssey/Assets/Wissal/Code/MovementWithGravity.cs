@@ -27,6 +27,8 @@ public class MovementWithGravity : MonoBehaviour
     [SerializeField]
 	Transform playerInputSpace = default;
 
+    [SerializeField] private float mouseSensitivity = 2f;
+
     private Vector3 velocity, desiredVelocity;
     Rigidbody rb;
     bool desiredJump;
@@ -40,8 +42,6 @@ public class MovementWithGravity : MonoBehaviour
 
     Vector3 upAxis, rightAxis, forwardAxis;
 
-
-
     void OnValidate()
     {
         minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
@@ -52,6 +52,7 @@ public class MovementWithGravity : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
+        Cursor.lockState = CursorLockMode.Locked;
         OnValidate();
     }
     void Update()
