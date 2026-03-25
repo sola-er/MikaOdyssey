@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class DialogueTrigger : MonoBehaviour
+public class DialogueTrigger : MonoBehaviour, IInteractable
 {
     public Dialogue dialogue;
 
-    public void TriggerDialogue() //le findAnyObjectByType might be wrong, we should maybe put FindObjectByType
+    public void Interact() //le findAnyObjectByType might be wrong, we should maybe put FindObjectByType
     {
        FindFirstObjectByType<DialogueManager>().StartDialogue(dialogue);
     }

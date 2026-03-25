@@ -2,22 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
+    /*
+    BEFORE: 
     public Text nameText;
     public Text dialogueText;
+     */
+    // AFTER:
+    public TMP_Text nameText;
+    public TMP_Text dialogueText;
+    [SerializeField] GameObject dialogueBox;
+
+    public static bool dialogueIsActive = false;
+
+    private void Awake()
+    {
+        Debug.Assert(dialogueBox != null, "Insert a dialog box!");
+    }
 
     public Queue<string> sentences;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         sentences = new Queue<string>();
     }
-
+    void Update()
+    {
+        if (dialogueIsActive && Input.GetKeyDown(KeyCode.E))
+        {
+            DisplayNextSentence();
+        }
+    }
     public void StartDialogue (Dialogue dialogue)
     {
-
+        dialogueIsActive = true;
+        dialogueBox.SetActive(true);
         nameText.text = dialogue.name;
 
         sentences.Clear();
@@ -26,8 +47,6 @@ public class DialogueManager : MonoBehaviour
         {
             sentences.Enqueue(sentence);
         }
-
-        DisplayNextSentence();
     }
 
     public void DisplayNextSentence()
@@ -40,12 +59,11 @@ public class DialogueManager : MonoBehaviour
 
         string sentence = sentences.Dequeue();
         dialogueText.text = sentence;
-
-        void EndDialogue()
-        {
-            Debug.Log("End of convo");
-        }
-    
-    } 
+    }
+    void EndDialogue()
+    {
+        dialogueIsActive = false;
+        dialogueBox.SetActive(false);
+    }
 
 }
