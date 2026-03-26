@@ -8,7 +8,9 @@ public class PlayerInteractions : MonoBehaviour
 
     private void Update()
     {
-        if (currentInteractable != null && Input.GetKeyDown(boutonInteractif))
+        if (currentInteractable != null && 
+            Input.GetKeyDown(boutonInteractif) &&
+            !DialogueManager.dialogueIsActive) // so that E doesnt start dialogue again if we're already talking
         {
             currentInteractable.Interact();
         }
@@ -16,6 +18,8 @@ public class PlayerInteractions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) // peut-etre a changer pour mettre quand nous somme dans la zone et pas seulement quand on entre.
     {
+        Debug.Log("Entered trigger with: " + other.name);
+
         IInteractable interactable = other.GetComponent<IInteractable>();
         if (interactable != null)
         {
