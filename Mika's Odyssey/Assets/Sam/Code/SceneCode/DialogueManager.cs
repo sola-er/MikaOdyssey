@@ -28,16 +28,23 @@ public class DialogueManager : MonoBehaviour
     {
         sentences = new Queue<string>();
     }
-    void Update()
-    {
-        if (dialogueIsActive && Input.GetKeyDown(KeyCode.E))
-        {
-            DisplayNextSentence();
-        }
-    }
+    //void Update()
+    //{
+    //    if(ignoreFirstPress)
+    //    {
+    //        if (Input.GetKeyDown(KeyCode.E))
+    //            ignoreFirstPress = false;
+    //        return;
+    //    }
+    //    if (dialogueIsActive && Input.GetKeyDown(KeyCode.E))
+    //    {
+    //        DisplayNextSentence();
+    //    }
+    //}
     public void StartDialogue (Dialogue dialogue)
     {
         dialogueIsActive = true;
+
         dialogueBox.SetActive(true);
         nameText.text = dialogue.name;
 
@@ -47,6 +54,7 @@ public class DialogueManager : MonoBehaviour
         {
             sentences.Enqueue(sentence);
         }
+        DisplayNextSentence();
     }
 
     public void DisplayNextSentence()

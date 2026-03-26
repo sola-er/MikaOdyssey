@@ -5,17 +5,25 @@ public class PlayerInteractions : MonoBehaviour
     private IInteractable currentInteractable;
     [SerializeField] private KeyCode boutonInteractif = KeyCode.E;
 
-
+    //private void Update()
+    //{
+    //    if (currentInteractable != null && 
+    //        Input.GetKeyDown(boutonInteractif) &&
+    //        !DialogueManager.dialogueIsActive)
+    //    {
+    //        currentInteractable.Interact();
+    //    }
+    //}
     private void Update()
     {
-        if (currentInteractable != null && 
-            Input.GetKeyDown(boutonInteractif) &&
-            !DialogueManager.dialogueIsActive) // so that E doesnt start dialogue again if we're already talking
+        if (Input.GetKeyDown(boutonInteractif))
         {
-            currentInteractable.Interact();
+            if (DialogueManager.dialogueIsActive)
+                FindFirstObjectByType<DialogueManager>().DisplayNextSentence();
+            else if (currentInteractable != null)
+                currentInteractable.Interact();
         }
     }
-
     private void OnTriggerEnter(Collider other) // peut-etre a changer pour mettre quand nous somme dans la zone et pas seulement quand on entre.
     {
         Debug.Log("Entered trigger with: " + other.name);
