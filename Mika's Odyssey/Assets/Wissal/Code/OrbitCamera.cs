@@ -36,7 +36,16 @@ public class OrbitCamera : MonoBehaviour
         UpdateGravityAlignment();
         UpdateFocusPoint();
         if (Input.GetMouseButton(1))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             ManualRotation();
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
         orbitRotation = Quaternion.Euler(orbitAngles);
         Quaternion lookRotation = gravityAlignment * orbitRotation;
         Vector3 lookDirection = lookRotation * Vector3.forward;
