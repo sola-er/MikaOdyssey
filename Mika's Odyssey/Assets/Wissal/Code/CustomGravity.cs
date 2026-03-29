@@ -25,6 +25,8 @@ public static class CustomGravity
         Vector3 gravity = Vector3.zero;
         for (int i = 0; i != sources.Count; ++i)
             gravity += sources[i].GetGravity(position);
+        if (gravity == Vector3.zero)
+            return Vector3.up;
         return -gravity.normalized;
     }
     public static void Register (GravitySource source)

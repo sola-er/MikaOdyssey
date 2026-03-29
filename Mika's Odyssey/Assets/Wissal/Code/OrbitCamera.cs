@@ -17,6 +17,8 @@ public class OrbitCamera : MonoBehaviour
 
     [SerializeField, Min(0f)] float upAlignmentSpeed = 360f;
 
+    [SerializeField] float mouseSensitivity = 2f;
+
     Vector3 focusPoint;
     Vector2 orbitAngles = new Vector2(45f, 0f);
     Quaternion gravityAlignment = Quaternion.identity;
@@ -26,17 +28,28 @@ public class OrbitCamera : MonoBehaviour
     {
         focusPoint = focus.position;
         transform.localRotation = orbitRotation = Quaternion.Euler(orbitAngles);
+        Debug.Assert(focusPoint != null, "The camera needs a focus point!");
     }
 
     private void LateUpdate()
     {
         UpdateGravityAlignment();
         UpdateFocusPoint();
-        ManualRotation();
+        if (Input.GetMouseButton(1))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            ManualRotation();
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
         orbitRotation = Quaternion.Euler(orbitAngles);
         Quaternion lookRotation = gravityAlignment * orbitRotation;
         Vector3 lookDirection = lookRotation * Vector3.forward;
-        Vector3 lookPosition = focusPoint - lookDirection * distance;
+        Vector3 lookPosition = focusPoint - lookDirection * distance; // a ameliorer avec un tire de raycast
         transform.SetPositionAndRotation(lookPosition, lookRotation);
     }
 
@@ -80,9 +93,15 @@ public class OrbitCamera : MonoBehaviour
     void ManualRotation()
     {
         Vector2 input = new Vector2(
-            Input.GetAxis("Vertical Camera"), Input.GetAxis("Horizontal Camera"));
+            Input.GetAxis("Mouse Y") * mouseSensitivity, Input.GetAxis("Mouse X") * mouseSensitivity);
         const float e = 0.001f;
         if (input.x < -e || input.x > e || input.y < -e || input.y > e)
+        {
             orbitAngles += rotationSpeed * Time.unscaledDeltaTime * input;
+            orbitAngles = new Vector2(Mathf.Clamp(orbitAngles.x, -89, 89), orbitAngles.y);
+           
+
+        }
+            
     }
 }

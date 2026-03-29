@@ -5,14 +5,21 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class MovementWithGravity : MonoBehaviour
 {
+    [SerializeField] private float normalJumpHeight = 2.5f;
+    [SerializeField] private float spaceJumpHeight = 10f;
+    [SerializeField] private int normalAirJumps = 3;
+    [SerializeField] private int spaceAirJumps = 5;
+
+    public bool spaceTravelMode = false;
+
     [SerializeField, Range(0f, 100f)] private float maxSpeed = 10f;
 
     [SerializeField, Range(0f, 100f)] 
     float maxAcceleration = 10f, maxAirAcceleration = 1f;
 
-    [SerializeField, Range(0f, 10f)] float jumpHeight = 2f;
+    [SerializeField, Range(0f, 10f)] float jumpHeight = 2.5f;
 
-    [SerializeField, Range(0, 5)] int maxAirJumps = 0;
+    [SerializeField, Range(0, 5)] int maxAirJumps = 3;
 
     [SerializeField, Range(0f, 90f)]
     float maxGroundAngle = 25f, maxStairsAngle = 50f;
@@ -27,6 +34,8 @@ public class MovementWithGravity : MonoBehaviour
     [SerializeField]
 	Transform playerInputSpace = default;
 
+    [SerializeField] private float mouseSensitivity = 2f;
+
     private Vector3 velocity, desiredVelocity;
     Rigidbody rb;
     bool desiredJump;
@@ -40,8 +49,12 @@ public class MovementWithGravity : MonoBehaviour
 
     Vector3 upAxis, rightAxis, forwardAxis;
 
-
-
+    public void SetSpaceTravellingMode(bool enabled)
+    {
+        spaceTravelMode = enabled;
+        jumpHeight = enabled ? spaceJumpHeight : normalJumpHeight;
+        maxAirJumps = enabled ? spaceAirJumps : normalAirJumps;
+    }
     void OnValidate()
     {
         minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);

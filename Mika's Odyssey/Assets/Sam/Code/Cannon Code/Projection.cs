@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -11,7 +12,7 @@ public class Projection : MonoBehaviour // this is a made in progress, might not
 
     [SerializeField] private LineRenderer lineR;
     [SerializeField] private int maxPhysicsFrameIteration; // this will also be how far the ghost balls go, the less it is the less we will see in the future so less work in the end
-
+    private  Dictionary<Transform,Transform> spawnedObjects = new Dictionary<Transform,Transform>(); // dictionary to add objects into the moving class
 
     private void Start()
     {
@@ -27,19 +28,25 @@ public class Projection : MonoBehaviour // this is a made in progress, might not
             var ghostObj = Instantiate(obj.gameObject,obj.position,obj.rotation);
             ghostObj.GetComponent<Renderer>().enabled = false;
             SceneManager.MoveGameObjectToScene(ghostObj, simulationScene);
+            if (!ghostObj.isStatic) spawnedObjects.Add(obj, ghostObj.transform); // only on static
         }
     }
 
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        foreach (var item in spawnedObjects) // this is to update the position of objects to apply the trajectory change
+        {
+            item.Value.position = item.Key.position;
+            item.Value.rotation = item.Key.rotation;
+        }
     }
 
     public void TrajectorySimulation(Projectille ProjectillePrefb, Vector3 pos, Vector3 velocity)
     {
         var ghostObj = Instantiate(ProjectillePrefb, pos, Quaternion.identity);
         SceneManager.MoveGameObjectToScene(ghostObj.gameObject, simulationScene); // probably best to put in a function
+        
 
         ghostObj.Init(velocity,true);
 
