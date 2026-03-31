@@ -38,6 +38,8 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
 
     int jumpCount;
 
+    RaycastHit hit;
+    RaycastHit sprintHit;
 
     private void Start()
     {
@@ -94,16 +96,20 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
         
     }
 
-    private void PlayerMove() // im pretty sure if we put the player's transform into the orientation, we should be fine regardless,
+    private void PlayerMove() 
     {
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        if (grounded)
-            rb.AddForce(moveDirection.normalized * speed * 10f, ForceMode.Force);
-        else
-            rb.AddForce(moveDirection.normalized * speed * 10f * 0.5f, ForceMode.Force); // to slow if hes in the air
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput; //  step one
 
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, playerHeight))
+        {
+            Vector3 surfaceNormal = hit.normal;
+            Vector3 projectedVector = Vector3.ProjectOnPlane(moveDirection, surfaceNormal);
 
-
+            if (grounded)
+                rb.AddForce(projectedVector.normalized * speed * 10f, ForceMode.Force);
+            else
+                rb.AddForce(projectedVector.normalized * speed * 10f * 0.5f, ForceMode.Force); // to slow if hes in the air
+        }
     }
 
     private void SpeedLimit() 
@@ -119,10 +125,19 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
 
     private void Sprint() // the sprint speed value needs to be 30+ to be able to work properly
     {
-        if (Input.GetKey(Sprinter))
+        if (Physics.Raycast(transform.position, Vector3.down, out sprintHit, playerHeight))
         {
-            rb.AddForce(moveDirection.normalized * speed * sprintSpeed, ForceMode.Force);
+            Vector3 sprintSurfaceNormal = hit.normal;
+            Vector3 sprintProjectedVector = Vector3.ProjectOnPlane(moveDirection, sprintSurfaceNormal);
+
+            if (Input.GetKey(Sprinter))
+            {
+                rb.AddForce(sprintProjectedVector.normalized * speed * sprintSpeed, ForceMode.Force);
+            }
         }
+       
+
+       
     }
 
 }
