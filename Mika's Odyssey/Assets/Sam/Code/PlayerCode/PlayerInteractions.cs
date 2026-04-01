@@ -19,6 +19,7 @@ public class PlayerInteractions : MonoBehaviour
             else if (currentInteractable != null)
                 currentInteractable.Interact();
         }
+        promptUI.SetActive(currentInteractable != null && !DialogueManager.dialogueIsActive);
     }
     private void OnTriggerEnter(Collider other) // peut-etre a changer pour mettre quand nous somme dans la zone et pas seulement quand on entre.
     {
@@ -28,7 +29,7 @@ public class PlayerInteractions : MonoBehaviour
         if (interactable != null)
         {
             currentInteractable = interactable;
-            promptUI.SetActive;
+            promptUI.SetActive(true);
         }
 
     }
