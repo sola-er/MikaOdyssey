@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 296477792}
   - component: {fileID: 296477793}
   m_Layer: 0
-  m_Name: Platform (2)
+  m_Name: Trigger Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlatformTrigger
   fourthPlatform: {fileID: 574866951}
   raisedPosition: {x: -8, y: -31, z: -42.9}
-  riseSpeed: 2
+  riseSpeed: 4
 --- !u!65 &296477793
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -749,7 +749,7 @@ GameObject:
   - component: {fileID: 574866953}
   - component: {fileID: 574866952}
   m_Layer: 0
-  m_Name: Platform (3)
+  m_Name: Lettuce Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1087,8 +1087,146 @@ Transform:
   - {fileID: 1009051447}
   - {fileID: 296477791}
   - {fileID: 574866955}
+  - {fileID: 1038055705}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &904390702
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 904390703}
+  - component: {fileID: 904390705}
+  - component: {fileID: 904390704}
+  m_Layer: 5
+  m_Name: Interact Prompt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &904390703
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904390702}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1016710729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -485, y: -487}
+  m_SizeDelta: {x: 897.9026, y: 113.4967}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &904390704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904390702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Press "E" to interact
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 85
+  m_fontSizeBase: 85
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 1
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &904390705
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904390702}
+  m_CullTransparentMesh: 1
 --- !u!1 &914331130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,7 +1632,7 @@ GameObject:
   - component: {fileID: 1009051445}
   - component: {fileID: 1009051444}
   m_Layer: 0
-  m_Name: Platform (1)
+  m_Name: Platform 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1626,6 +1764,7 @@ RectTransform:
   m_Children:
   - {fileID: 634565170}
   - {fileID: 1229111919}
+  - {fileID: 904390703}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1716,6 +1855,11 @@ MonoBehaviour:
   gravity: 9.81
   outerRadius: 18
   outerFalloffRadius: 38
+--- !u!4 &1038055705 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4194089684751244, guid: ac513b6600c6aad4f866bb3f7e252464, type: 3}
+  m_PrefabInstance: {fileID: 1720645700}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1064595306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,7 +2395,7 @@ Transform:
   m_GameObject: {fileID: 1355863835}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20, y: -22, z: -42}
+  m_LocalPosition: {x: -24, y: -12, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2270,6 +2414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractions
   boutonInteractif: 101
+  promptUI: {fileID: 904390702}
 --- !u!1 &1428046773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2281,7 +2426,8 @@ GameObject:
   - component: {fileID: 1428046774}
   - component: {fileID: 1428046776}
   - component: {fileID: 1428046775}
-  - component: {fileID: 1428046777}
+  - component: {fileID: 1428046778}
+  - component: {fileID: 1428046779}
   m_Layer: 0
   m_Name: Dialogue Collider
   m_TagString: Untagged
@@ -2333,7 +2479,44 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428046773}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1428046777
+--- !u!114 &1428046778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428046773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9614fc9e5e3e08e44b905da736daa5b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MochiDialogueTrigger
+  notStarted:
+    name: Mochi
+    sentences:
+    - Hello!
+    - I'm pretty hungry. Go get me a piece of lettuce please.
+    - It's on those platforms over there!
+    - Shouldn't be too hard. Come back to see me if there's an issue.
+  platformIsGone:
+    name: Mochi
+    sentences:
+    - The lettuce got away?
+    - Right... I forgot to say it does that sometimes.
+    - I guess you could try jumping real high to get it... You might get lost in
+      space though.
+    - 'Go find the switch to get that platform back down instead. It''s around here
+      somewhere, probably next to a '
+  lookingForSwitch:
+    name: 
+    sentences: []
+  switchActivated:
+    name: 
+    sentences: []
+  complete:
+    name: 
+    sentences: []
+--- !u!114 &1428046779
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2348,9 +2531,10 @@ MonoBehaviour:
   dialogue:
     name: Mochi
     sentences:
-    - hiiiiiiiiii :3
-    - i'm kinda hungry .. :c pls go get me lettuce owo
-    - " it's over there !!!! on the platforms !!!! \xAD:o"
+    - Hello!
+    - I'm pretty hungry. Go get me a piece of lettuce please.
+    - It's on those platforms over there!
+    - Shouldn't be too hard. Come back to see me if there's an issue.
 --- !u!1 &1459863095
 GameObject:
   m_ObjectHideFlags: 0
@@ -2491,7 +2675,7 @@ GameObject:
   - component: {fileID: 1504562322}
   - component: {fileID: 1504562321}
   m_Layer: 0
-  m_Name: Platform
+  m_Name: Platform 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2596,7 +2780,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 805645026}
     m_Modifications:
     - target: {fileID: 1680352926518358, guid: ac513b6600c6aad4f866bb3f7e252464, type: 3}
       propertyPath: m_Name
@@ -2632,15 +2816,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4194089684751244, guid: ac513b6600c6aad4f866bb3f7e252464, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4194089684751244, guid: ac513b6600c6aad4f866bb3f7e252464, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4194089684751244, guid: ac513b6600c6aad4f866bb3f7e252464, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4194089684751244, guid: ac513b6600c6aad4f866bb3f7e252464, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2937,7 +3121,6 @@ SceneRoots:
   - {fileID: 613478988}
   - {fileID: 1355863841}
   - {fileID: 916618939}
-  - {fileID: 1720645700}
   - {fileID: 537588112}
   - {fileID: 1016710729}
   - {fileID: 805645026}
