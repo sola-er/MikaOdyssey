@@ -88,6 +88,37 @@ public class PlayerController : MonoBehaviour
         playerCamera.transform.localRotation = Quaternion.Euler(camRotation, 0f, 0f);
     }
 
+    private void SnapRotationToInput()
+    {
+        float h = Input.GetAxisRaw("Horizontal"); // A/D
+     float v = Input.GetAxisRaw("Vertical");   // W/S
+
+        // No input → do nothing
+        if (h == 0 && v == 0)
+            return;
+
+        // Camera directions
+        Vector3 camForward = playerCamera.transform.forward;
+        Vector3 camRight = playerCamera.transform.right;
+
+        // Flatten (ignore vertical tilt)
+        camForward.y = 0;
+        camRight.y = 0;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
+        // Desired direction
+        Vector3 moveDir = camForward * v + camRight * h;
+
+        // Snap rotation instantly
+        if (moveDir != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDir);
+            transform.rotation = targetRotation;
+        }
+    }
+
     // ---------- JUMP ----------
     private void HandleJump()
     {
