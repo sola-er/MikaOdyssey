@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class OrbitCamera : MonoBehaviour
 {
-    [SerializeField] Transform focus = default; // tells the camera what to focus on
+    [SerializeField] Transform focus; // tells the camera what to focus on
 
     [SerializeField, Range(1f, 20f)] float distance = 5f; // at what distance from the focus should cam be
 
@@ -28,7 +28,7 @@ public class OrbitCamera : MonoBehaviour
     {
         focusPoint = focus.position;
         transform.localRotation = orbitRotation = Quaternion.Euler(orbitAngles);
-        Debug.Assert(focusPoint != null, "The camera needs a focus point!");
+        Debug.Assert(focus != null, "The camera needs a focus point!");
     }
 
     private void LateUpdate()

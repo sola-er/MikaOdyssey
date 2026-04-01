@@ -2,18 +2,14 @@ using UnityEngine;
 
 public class PlayerInteractions : MonoBehaviour
 {
-    private IInteractable currentInteractable;
     [SerializeField] private KeyCode boutonInteractif = KeyCode.E;
+    [SerializeField] GameObject promptUI;
 
-    //private void Update()
-    //{
-    //    if (currentInteractable != null && 
-    //        Input.GetKeyDown(boutonInteractif) &&
-    //        !DialogueManager.dialogueIsActive)
-    //    {
-    //        currentInteractable.Interact();
-    //    }
-    //}
+    private IInteractable currentInteractable;
+    private void Awake()
+    {
+        Debug.Assert(promptUI != null);
+    }
     private void Update()
     {
         if (Input.GetKeyDown(boutonInteractif))
@@ -32,18 +28,17 @@ public class PlayerInteractions : MonoBehaviour
         if (interactable != null)
         {
             currentInteractable = interactable;
-            Debug.Log("Toucher sur E pour interagir");
+            promptUI.SetActive;
         }
 
     }
-
     private void OnTriggerExit(Collider other)
     {
         IInteractable interactable = other.GetComponent<IInteractable>();
         if (interactable != null && interactable == currentInteractable)
         {
             currentInteractable = null;
-            Debug.Log("Zone quitte");
+            Debug.Log("Zone quittee");
 
         } 
     }
