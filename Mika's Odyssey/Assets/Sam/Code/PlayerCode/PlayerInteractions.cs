@@ -12,6 +12,8 @@ public class PlayerInteractions : MonoBehaviour
     }
     private void Update()
     {
+        if (currentInteractable != null && (currentInteractable as MonoBehaviour) == null)
+            currentInteractable = null;
         if (Input.GetKeyDown(boutonInteractif))
         {
             if (DialogueManager.dialogueIsActive)
@@ -43,6 +45,4 @@ public class PlayerInteractions : MonoBehaviour
 
         } 
     }
-
-
 }

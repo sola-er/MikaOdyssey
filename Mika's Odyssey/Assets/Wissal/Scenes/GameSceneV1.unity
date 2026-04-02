@@ -2727,12 +2727,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72558067ce3d8aa488418fff5e9e3c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementWithGravity
-  normalJumpHeight: 1
+  normalJumpHeight: 5
   spaceJumpHeight: 10
   normalAirJumps: 1
   spaceAirJumps: 5
   spaceTravelMode: 0
-  maxSpeed: 10
+  maxSpeed: 5
   maxAcceleration: 100
   maxAirAcceleration: 50
   jumpHeight: 1

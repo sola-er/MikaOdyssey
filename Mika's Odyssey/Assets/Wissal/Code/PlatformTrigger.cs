@@ -19,7 +19,6 @@ public class PlatformTrigger : MonoBehaviour
             hasTriggered = true;
             StartCoroutine(MovePlatform(raisedPosition));
             Planet1Manager.Singleton.AdvanceQuest(MochiQuestState.PlatformIsGone);
-            gameObject.SetActive(false);
         }
     }
     private IEnumerator MovePlatform(Vector3 end)
@@ -35,6 +34,8 @@ public class PlatformTrigger : MonoBehaviour
         }
         fourthPlatform.transform.position = end;
     }
-    public void MoveBack() =>
+    public void MoveBack()
+    {
         StartCoroutine(MovePlatform(normalPosition));
+    }
 }

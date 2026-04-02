@@ -7,6 +7,6 @@ public class DomeSwitchTrigger : MonoBehaviour, IInteractable
     {
         Planet1Manager.Singleton.AdvanceQuest(MochiQuestState.SwitchActivated);
         platformTrigger.MoveBack();
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }
