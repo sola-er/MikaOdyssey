@@ -4,7 +4,6 @@ public class MochiDialogueTrigger : MonoBehaviour, IInteractable
 {
     [SerializeField] private Dialogue notStarted;
     [SerializeField] private Dialogue platformIsGone;
-    [SerializeField] private Dialogue lookingForSwitch;
     [SerializeField] private Dialogue switchActivated;
     [SerializeField] private Dialogue complete;
     public void Interact()
@@ -13,7 +12,6 @@ public class MochiDialogueTrigger : MonoBehaviour, IInteractable
         {
             MochiQuestState.NotStarted => notStarted,
             MochiQuestState.PlatformIsGone => platformIsGone,
-            MochiQuestState.LookingForSwitch => lookingForSwitch,
             MochiQuestState.SwitchActivated => switchActivated,
             MochiQuestState.Complete => complete,
             _ => notStarted

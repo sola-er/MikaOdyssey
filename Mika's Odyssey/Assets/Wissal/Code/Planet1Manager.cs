@@ -4,9 +4,7 @@ public enum MochiQuestState
 {
     NotStarted,
     PlatformIsGone,
-    LookingForSwitch,
     SwitchActivated,
-    LettuceCollected,
     Complete
 }
 public class Planet1Manager : MonoBehaviour
