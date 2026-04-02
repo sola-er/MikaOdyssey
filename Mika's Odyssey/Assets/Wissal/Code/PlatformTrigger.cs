@@ -12,8 +12,8 @@ public class PlatformTrigger : MonoBehaviour
         if (!hasTriggered && other.CompareTag("Player"))
         {
             hasTriggered = true;
-            Planet1Manager.Singleton.mochiQuest = MochiQuestState.PlatformIsGone;
             StartCoroutine(RaisePlatform());
+            Planet1Manager.Singleton.mochiQuest = MochiQuestState.PlatformIsGone;
         }
     }
     private IEnumerator RaisePlatform()

@@ -99,8 +99,6 @@ public class OrbitCamera : MonoBehaviour
         {
             orbitAngles += rotationSpeed * Time.unscaledDeltaTime * input;
             orbitAngles = new Vector2(Mathf.Clamp(orbitAngles.x, -89, 89), orbitAngles.y);
-           
-
         }
             
     }
