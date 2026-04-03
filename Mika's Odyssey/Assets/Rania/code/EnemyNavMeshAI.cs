@@ -1,4 +1,3 @@
-using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,7 +15,8 @@ public class EnemyPathFinder : MonoBehaviour
 
     private NavMeshAgent agent;
     private float elapsedTime;
-    private bool isGameOver = false;
+
+    private bool isDead = false;
 
     private void Awake()
     {
@@ -25,7 +25,6 @@ public class EnemyPathFinder : MonoBehaviour
 
     private void Start()
     {
-        // Ensure enemy is placed on NavMesh
         if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 10f, NavMesh.AllAreas))
         {
             transform.position = hit.position;
@@ -36,21 +35,24 @@ public class EnemyPathFinder : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        // STOP ALL LOGIC if game over
-        if (isGameOver)
-            return;
+    private bool dead;
 
-        if (IsCloseEnoughToPlayer())
-        {
-            FollowPlayer();
-        }
-        else
-        {
-            Roam();
-        }
+private void Update()
+{
+    if (dead) return;
+
+    agent.SetDestination(player.position);
+}
+
+private void OnTriggerEnter(Collider other)
+{
+    if (other.transform == player)
+    {
+        dead = true;
+        agent.ResetPath();
+        agent.isStopped = true;
     }
+}
 
     private bool IsCloseEnoughToPlayer()
     {
@@ -59,14 +61,12 @@ public class EnemyPathFinder : MonoBehaviour
 
     private void FollowPlayer()
     {
-        agent.isStopped = false;
+        // No need to constantly toggle isStopped
         agent.SetDestination(player.position);
     }
 
     private void Roam()
     {
-        agent.isStopped = false;
-
         elapsedTime += Time.deltaTime;
 
         if (elapsedTime >= timeBetweenRoamTargets || !agent.hasPath)
@@ -93,20 +93,12 @@ public class EnemyPathFinder : MonoBehaviour
         return origin;
     }
 
-    private void StopMoving()
+    private void StopEnemy()
     {
-        isGameOver = true;
+        isDead = true;
 
+        agent.ResetPath();
         agent.isStopped = true;
-        agent.ResetPath(); // VERY IMPORTANT
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.transform == player && !isGameOver)
-        {
-            StopMoving();
-            gameManager.GameOver();
-        }
-    }
 }

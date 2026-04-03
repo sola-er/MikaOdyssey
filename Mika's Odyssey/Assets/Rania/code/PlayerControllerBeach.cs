@@ -31,15 +31,39 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         stamina = maxStamina;
 
+        rb.freezeRotation = true; // CRITICAL: prevents physics spin
+
         Cursor.lockState = CursorLockMode.Locked;
     }
+
+    private Quaternion targetRotation;
 
     private void Update()
     {
         ReadInput();
-        RotatePlayer();
-        HandleJump();
-        HandleStamina();
+        UpdateTargetRotation();
+        ApplyRotation();
+    }
+
+    private void UpdateTargetRotation()
+    {
+        if (inputDirection.sqrMagnitude < 0.01f)
+          return;
+
+        Vector3 camForward = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up).normalized;
+        Vector3 camRight   = Vector3.ProjectOnPlane(playerCamera.transform.right, Vector3.up).normalized;
+
+        Vector3 moveDir = camForward * inputDirection.z + camRight * inputDirection.x;
+
+        if (moveDir.sqrMagnitude < 0.01f)
+            return;
+
+        targetRotation = Quaternion.LookRotation(moveDir);
+    }
+
+    private void ApplyRotation()
+    {
+        transform.rotation = targetRotation;
     }
 
     private void FixedUpdate()
@@ -54,69 +78,48 @@ public class PlayerController : MonoBehaviour
             Input.GetAxisRaw("Horizontal"),
             0f,
             Input.GetAxisRaw("Vertical")
-        ).normalized;
+        );
     }
 
-    // ---------- MOVEMENT ----------
-    private void Move()
-    {
-        // Movement relative to player (stable)
-        Vector3 moveDir = transform.forward * inputDirection.z +
-                          transform.right * inputDirection.x;
-
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift) && stamina > 0f && moveDir != Vector3.zero;
-        float currentSpeed = isSprinting ? sprintSpeed : speed;
-
-        Vector3 velocity = moveDir * currentSpeed;
-
-        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
-    }
-
-    // ---------- ROTATION ----------
-    private void RotatePlayer()
+    // ---------- CAMERA ROTATION (ONLY CAMERA NOW) ----------
+    private void RotateCamera()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        // Rotate player horizontally
+        // rotate player horizontally ONLY for camera yaw
         transform.Rotate(Vector3.up * mouseX);
 
-        // Rotate camera vertically
         camRotation -= mouseY;
         camRotation = Mathf.Clamp(camRotation, -80f, 80f);
 
         playerCamera.transform.localRotation = Quaternion.Euler(camRotation, 0f, 0f);
     }
 
-    private void SnapRotationToInput()
+    // ---------- MOVEMENT ----------
+    private void Move()
     {
-        float h = Input.GetAxisRaw("Horizontal"); // A/D
-     float v = Input.GetAxisRaw("Vertical");   // W/S
+        Vector3 camForward = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up).normalized;
+        Vector3 camRight   = Vector3.ProjectOnPlane(playerCamera.transform.right, Vector3.up).normalized;
 
-        // No input → do nothing
-        if (h == 0 && v == 0)
-            return;
+        Vector3 moveDir = camForward * inputDirection.z +
+                          camRight * inputDirection.x;
 
-        // Camera directions
-        Vector3 camForward = playerCamera.transform.forward;
-        Vector3 camRight = playerCamera.transform.right;
-
-        // Flatten (ignore vertical tilt)
-        camForward.y = 0;
-        camRight.y = 0;
-
-        camForward.Normalize();
-        camRight.Normalize();
-
-        // Desired direction
-        Vector3 moveDir = camForward * v + camRight * h;
-
-        // Snap rotation instantly
-        if (moveDir != Vector3.zero)
+        if (moveDir.sqrMagnitude < 0.0001f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-            transform.rotation = targetRotation;
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+            return;
         }
+
+        moveDir.Normalize();
+
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift) && stamina > 0f;
+
+        float currentSpeed = isSprinting ? sprintSpeed : speed;
+
+        Vector3 velocity = moveDir * currentSpeed;
+
+        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
     }
 
     // ---------- JUMP ----------
@@ -132,7 +135,7 @@ public class PlayerController : MonoBehaviour
     // ---------- STAMINA ----------
     private void HandleStamina()
     {
-        bool isMoving = inputDirection != Vector3.zero;
+        bool isMoving = inputDirection.sqrMagnitude > 0.01f;
         bool isSprinting = Input.GetKey(KeyCode.LeftShift) && stamina > 0f && isMoving;
 
         float delta = isSprinting ? -staminaDrainRate : staminaRegenRate;
