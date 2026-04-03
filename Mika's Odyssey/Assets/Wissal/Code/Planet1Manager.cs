@@ -4,9 +4,7 @@ public enum MochiQuestState
 {
     NotStarted,
     PlatformIsGone,
-    LookingForSwitch,
     SwitchActivated,
-    LettuceCollected,
     Complete
 }
 public class Planet1Manager : MonoBehaviour
@@ -26,6 +24,9 @@ public class Planet1Manager : MonoBehaviour
         if (newState > mochiQuest)
             mochiQuest = newState;
         if (mochiQuest == MochiQuestState.Complete)
+        {
             SpaceGameManager.Singleton.planet1Complete = true;
+            Debug.Log("Fist planet complete");
+        }
     }
 }
