@@ -6,12 +6,6 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
-    /*
-    BEFORE: 
-    public Text nameText;
-    public Text dialogueText;
-     */
-    // AFTER:
     public TMP_Text nameText;
     public TMP_Text dialogueText;
     [SerializeField] GameObject dialogueBox;

@@ -2,20 +2,18 @@ using UnityEngine;
 
 public class PlayerInteractions : MonoBehaviour
 {
-    private IInteractable currentInteractable;
     [SerializeField] private KeyCode boutonInteractif = KeyCode.E;
+    [SerializeField] GameObject promptUI;
 
-    //private void Update()
-    //{
-    //    if (currentInteractable != null && 
-    //        Input.GetKeyDown(boutonInteractif) &&
-    //        !DialogueManager.dialogueIsActive)
-    //    {
-    //        currentInteractable.Interact();
-    //    }
-    //}
+    private IInteractable currentInteractable;
+    private void Awake()
+    {
+        Debug.Assert(promptUI != null);
+    }
     private void Update()
     {
+        if (currentInteractable != null && (currentInteractable as MonoBehaviour) == null)
+            currentInteractable = null;
         if (Input.GetKeyDown(boutonInteractif))
         {
             if (DialogueManager.dialogueIsActive)
@@ -23,6 +21,7 @@ public class PlayerInteractions : MonoBehaviour
             else if (currentInteractable != null)
                 currentInteractable.Interact();
         }
+        promptUI.SetActive(currentInteractable != null && !DialogueManager.dialogueIsActive);
     }
     private void OnTriggerEnter(Collider other) // peut-etre a changer pour mettre quand nous somme dans la zone et pas seulement quand on entre.
     {
@@ -32,21 +31,18 @@ public class PlayerInteractions : MonoBehaviour
         if (interactable != null)
         {
             currentInteractable = interactable;
-            Debug.Log("Toucher sur E pour interagir");
+            promptUI.SetActive(true);
         }
 
     }
-
     private void OnTriggerExit(Collider other)
     {
         IInteractable interactable = other.GetComponent<IInteractable>();
         if (interactable != null && interactable == currentInteractable)
         {
             currentInteractable = null;
-            Debug.Log("Zone quitte");
+            Debug.Log("Zone quittee");
 
         } 
     }
-
-
 }

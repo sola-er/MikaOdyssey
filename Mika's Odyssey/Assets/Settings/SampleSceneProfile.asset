@@ -29,11 +29,14 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 65472
   tint:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   highQualityFiltering:
     m_OverrideState: 1
     m_Value: 1
+  filter:
+    m_OverrideState: 0
+    m_Value: 0
   downscale:
     m_OverrideState: 0
     m_Value: 0
@@ -88,6 +91,7 @@ MonoBehaviour:
   m_Name: SampleSceneProfile
   m_EditorClassIdentifier: 
   components:
+  - {fileID: 6347581587940781474}
   - {fileID: 849379129802519247}
   - {fileID: -7893295128165547882}
   - {fileID: 7391319092446245454}
@@ -132,6 +136,67 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 1
     m_Value: 647
+--- !u!114 &6347581587940781474
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8752436c1c6e30f4da82236df21c18e3, type: 3}
+  m_Name: Fog
+  m_EditorClassIdentifier: Assembly-CSharp::UnityEngine.Rendering.Universal.Fog
+  active: 1
+  enabled:
+    m_OverrideState: 1
+    m_Value: 1
+  quality:
+    m_OverrideState: 1
+    m_Value: 2
+  alphaMultiplier:
+    m_OverrideState: 1
+    m_Value: 0.5
+  additionalLightsIntensityMultiplier:
+    m_OverrideState: 1
+    m_Value: 0.75
+  jitter:
+    m_OverrideState: 1
+    m_Value: 0.15
+  downsample:
+    m_OverrideState: 0
+    m_Value: 2
+  steps:
+    m_OverrideState: 0
+    m_Value: 125
+  stepSize:
+    m_OverrideState: 0
+    m_Value: 0.2
+  density:
+    m_OverrideState: 1
+    m_Value: 0.045
+  minDensity:
+    m_OverrideState: 1
+    m_Value: 0
+  fogColor:
+    m_OverrideState: 1
+    m_Value: {r: 0.17443931, g: 0.6560881, b: 0.754717, a: 1}
+  brightness:
+    m_OverrideState: 1
+    m_Value: 3
+  anisotropy:
+    m_OverrideState: 1
+    m_Value: 0.8
+  blurRadius:
+    m_OverrideState: 1
+    m_Value: 0.01
+  blurStrength:
+    m_OverrideState: 1
+    m_Value: 0.5
+  blurIterations:
+    m_OverrideState: 1
+    m_Value: 2
 --- !u!114 &7391319092446245454
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -144,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf1aba9553839d41ae37dd52e9ebcce, type: 3}
   m_Name: MotionBlur
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 0
     m_Value: 0
