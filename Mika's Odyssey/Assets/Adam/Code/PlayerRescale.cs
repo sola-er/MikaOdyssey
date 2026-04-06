@@ -8,6 +8,7 @@ public class PlayerRescale : MonoBehaviour
     [Header("Refs")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private CapsuleCollider capsule;
+    [SerializeField] private PlayerAction playerController; // pour sync playerHeight
 
     [Header("Scale Settings")]
     [SerializeField] private SizeState currentState = SizeState.Normal;
@@ -16,18 +17,32 @@ public class PlayerRescale : MonoBehaviour
     [SerializeField] private float bigScale = 1.6f;
 
     [Header("Physics (Science)")]
-    [SerializeField] private float baseMass = 1.0f;          
-    [SerializeField] private float resizeDuration = 0.18f;   
+    [SerializeField] private float baseMass = 1.0f;
+    [SerializeField] private float resizeDuration = 0.18f;
 
     [Header("Anti-Clipping")]
-    [SerializeField] private LayerMask solidMask;            
-    [SerializeField] private float clearancePadding = 0.02f; 
-    // Cached original collider dims (at Normal scale)
+    [SerializeField] private LayerMask solidMask;
+    [SerializeField] private float clearancePadding = 0.02f;
+
+    // Proprietes publiques - lisibles par les autres scripts
+    public SizeState CurrentState => currentState;
+    public float CurrentScale => transform.localScale.x;
+    public float CurrentMass => rb.mass;
+
+    // Evenement declenche quand un resize est termine
+    public System.Action<SizeState> OnResizeComplete;
+
+    // Dimensions de base du collider (etat Normal)
     private float baseHeight;
     private float baseRadius;
     private Vector3 baseCenter;
+    private float basePlayerHeight; // valeur originale dans PlayerAction
 
     private Coroutine resizeRoutine;
+
+    private static readonly Collider[] _overlapBuffer = new Collider[16];
+
+    // -------------------------------------------------------
 
     private void Reset()
     {
@@ -39,21 +54,32 @@ public class PlayerRescale : MonoBehaviour
     {
         if (!rb) rb = GetComponent<Rigidbody>();
         if (!capsule) capsule = GetComponent<CapsuleCollider>();
+        if (!playerController) playerController = GetComponent<PlayerAction>();
 
+        // Avertissement si solidMask non configure
+        if (solidMask == 0)
+            Debug.LogWarning("[PlayerRescale] solidMask n'est pas assigne. " +
+                             "L'anti-clipping ne fonctionnera pas correctement.");
+
+        // Cacher les dims de base
         baseHeight = capsule.height;
         baseRadius = capsule.radius;
         baseCenter = capsule.center;
+
+        if (playerController != null)
+            basePlayerHeight = playerController.playerHeight;
 
         ApplyStateInstant(currentState);
     }
 
     private void Update()
     {
-        
         if (Input.GetKeyDown(KeyCode.Alpha1)) TrySetState(SizeState.Small);
         if (Input.GetKeyDown(KeyCode.Alpha2)) TrySetState(SizeState.Normal);
         if (Input.GetKeyDown(KeyCode.Alpha3)) TrySetState(SizeState.Big);
     }
+
+    // -------------------------------------------------------
 
     public void TrySetState(SizeState target)
     {
@@ -61,12 +87,9 @@ public class PlayerRescale : MonoBehaviour
 
         float targetScale = GetScale(target);
 
-        
+        // Anti-clipping : on verifie seulement si on grossit
         if (targetScale > transform.localScale.x && !CanResizeTo(targetScale))
-        {
-            
             return;
-        }
 
         if (resizeRoutine != null) StopCoroutine(resizeRoutine);
         resizeRoutine = StartCoroutine(ResizeSmooth(target));
@@ -80,76 +103,78 @@ public class PlayerRescale : MonoBehaviour
         float t = 0f;
         while (t < 1f)
         {
-            t += Time.unscaledDeltaTime / resizeDuration; // unscaled -> works even in slow time
+            t += Time.unscaledDeltaTime / resizeDuration;
             float s = Mathf.Lerp(startScale, endScale, Mathf.SmoothStep(0f, 1f, t));
             ApplyScaleAndPhysics(s);
             yield return null;
         }
 
+        // Forcer la valeur finale exacte
+        ApplyScaleAndPhysics(endScale);
         currentState = target;
         resizeRoutine = null;
+
+        OnResizeComplete?.Invoke(currentState);
     }
 
     private void ApplyStateInstant(SizeState state)
     {
         currentState = state;
         ApplyScaleAndPhysics(GetScale(state));
+        OnResizeComplete?.Invoke(currentState);
     }
 
     private void ApplyScaleAndPhysics(float scale)
     {
-        // Visual scale
+        // Echelle visuelle
         transform.localScale = Vector3.one * scale;
 
-        // Collider scale (keep consistent with character)
+        // Collider
         capsule.height = baseHeight * scale;
         capsule.radius = baseRadius * scale;
         capsule.center = baseCenter * scale;
 
-        // Mass scaling (science-like): m = m0 * s^3 (volume)
-        rb.mass = baseMass * scale * scale * scale;
+        // Masse cubique : m = m0 * s^3 (loi de volume)
+        rb.mass = baseMass * Mathf.Pow(scale, 3f);
+
+        // Sync playerHeight dans PlayerAction pour que le raycast grounded reste correct
+        if (playerController != null)
+            playerController.playerHeight = basePlayerHeight * scale;
     }
 
-    private float GetScale(SizeState state)
+    // -------------------------------------------------------
+
+    private float GetScale(SizeState state) => state switch
     {
-        return state switch
-        {
-            SizeState.Small => smallScale,
-            SizeState.Normal => normalScale,
-            SizeState.Big => bigScale,
-            _ => normalScale
-        };
-    }
+        SizeState.Small => smallScale,
+        SizeState.Normal => normalScale,
+        SizeState.Big => bigScale,
+        _ => normalScale
+    };
 
     private bool CanResizeTo(float targetScale)
     {
-        // We check if the resized capsule would overlap with solid colliders.
-        // Use CapsuleCollider geometry in world space.
-        float radius = (baseRadius * targetScale) - clearancePadding;
-        float height = (baseHeight * targetScale) - clearancePadding;
+        float radius = Mathf.Max(0.01f, baseRadius * targetScale - clearancePadding);
+        float height = Mathf.Max(radius * 2f + 0.01f, baseHeight * targetScale - clearancePadding);
 
-        radius = Mathf.Max(0.01f, radius);
-        height = Mathf.Max(radius * 2f + 0.01f, height);
+        // On part des pieds de Mika (position reelle au sol) et on monte
+        // Les pieds = position du transform - demi-hauteur du collider actuel
+        float currentHalfHeight = capsule.height * 0.5f;
+        Vector3 feet = transform.position - Vector3.up * currentHalfHeight;
 
-        Vector3 centerWorld = transform.TransformPoint(baseCenter * targetScale);
+        // Le sommet apres agrandissement
+        Vector3 top = feet + Vector3.up * height;
 
-        // Capsule endpoints in world space (along Y)
-        float half = Mathf.Max(0f, (height * 0.5f) - radius);
-        Vector3 p1 = centerWorld + Vector3.up * half;
-        Vector3 p2 = centerWorld - Vector3.up * half;
+        // On teste une sphere au sommet seulement
+        // Suffit pour detecter un plafond, et ignore completement le sol
+        int hits = Physics.OverlapSphereNonAlloc(top, radius, _overlapBuffer, solidMask);
 
-        // Check overlaps
-        int hits = Physics.OverlapCapsuleNonAlloc(p1, p2, radius, _overlapBuffer, solidMask);
-        // We will always hit our own collider sometimes, so we filter it out:
         for (int i = 0; i < hits; i++)
         {
-            Collider c = _overlapBuffer[i];
-            if (!c) continue;
-            if (c == capsule) continue;
+            if (_overlapBuffer[i] == null) continue;
+            if (_overlapBuffer[i] == capsule) continue;
             return false;
         }
         return true;
     }
-
-    private static readonly Collider[] _overlapBuffer = new Collider[16];
 }

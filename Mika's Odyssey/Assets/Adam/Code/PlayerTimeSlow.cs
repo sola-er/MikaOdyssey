@@ -1,50 +1,58 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerTimeSlow : MonoBehaviour
 {
     [Header("Input")]
-    [SerializeField] private KeyCode slowKey = KeyCode.LeftShift;
+    [SerializeField] private KeyCode slowKey = KeyCode.E;
 
-    [Header("Slow Time Settings")]
+    [Header("Slow Settings")]
     [SerializeField][Range(0.05f, 1f)] private float slowFactor = 0.3f;
     [SerializeField] private float maxDuration = 3f;
     [SerializeField] private float cooldown = 5f;
-
-    [Header("Optional")]
     [SerializeField] private bool holdToUse = true;
+
+    [Header("Whitelist")]
+    [SerializeField] private List<GameObject> slowTargets = new List<GameObject>();
 
     private float currentSlowTime;
     private float cooldownTimer;
     private bool isSlowing = false;
-    private float defaultFixedDeltaTime;
+
+    // Cache des ISlowable trouves sur les targets
+    private List<ISlowable> slowables = new List<ISlowable>();
 
     private void Awake()
     {
-        defaultFixedDeltaTime = Time.fixedDeltaTime;
         currentSlowTime = maxDuration;
+        BuildSlowableCache();
+    }
+
+    // Construit la liste des ISlowable depuis les GameObjects assignes
+    private void BuildSlowableCache()
+    {
+        slowables.Clear();
+        foreach (GameObject go in slowTargets)
+        {
+            if (go == null) continue;
+            // Cherche ISlowable sur l'objet et ses enfants
+            ISlowable[] found = go.GetComponentsInChildren<ISlowable>();
+            slowables.AddRange(found);
+        }
     }
 
     private void Update()
     {
         if (cooldownTimer > 0f)
-            cooldownTimer -= Time.unscaledDeltaTime;
+            cooldownTimer -= Time.deltaTime;
 
-        bool wantsSlow = holdToUse
-            ? Input.GetKey(slowKey)
-            : Input.GetKeyDown(slowKey);
-
+        bool wantsSlow = holdToUse ? Input.GetKey(slowKey) : Input.GetKeyDown(slowKey);
         bool releasedSlow = holdToUse && Input.GetKeyUp(slowKey);
 
         if (holdToUse)
         {
-            if (wantsSlow && CanUseSlow())
-            {
-                StartSlow();
-            }
-            else if (releasedSlow || currentSlowTime <= 0f)
-            {
-                StopSlow();
-            }
+            if (wantsSlow && CanUseSlow()) StartSlow();
+            else if (releasedSlow || currentSlowTime <= 0f) StopSlow();
         }
         else
         {
@@ -57,8 +65,7 @@ public class PlayerTimeSlow : MonoBehaviour
 
         if (isSlowing)
         {
-            currentSlowTime -= Time.unscaledDeltaTime;
-
+            currentSlowTime -= Time.deltaTime;
             if (currentSlowTime <= 0f)
             {
                 currentSlowTime = 0f;
@@ -68,57 +75,43 @@ public class PlayerTimeSlow : MonoBehaviour
         else
         {
             if (cooldownTimer <= 0f && currentSlowTime < maxDuration)
-            {
-                currentSlowTime += Time.unscaledDeltaTime;
-                currentSlowTime = Mathf.Min(currentSlowTime, maxDuration);
-            }
+                currentSlowTime = Mathf.Min(currentSlowTime + Time.deltaTime, maxDuration);
         }
     }
 
-    private bool CanUseSlow()
-    {
-        return cooldownTimer <= 0f && currentSlowTime > 0f;
-    }
+    private bool CanUseSlow() => cooldownTimer <= 0f && currentSlowTime > 0f;
 
     private void StartSlow()
     {
         if (isSlowing) return;
-
         isSlowing = true;
-        Time.timeScale = slowFactor;
-        Time.fixedDeltaTime = defaultFixedDeltaTime * slowFactor;
+        foreach (ISlowable s in slowables) s.SlowDown(slowFactor);
     }
 
     private void StopSlow()
     {
         if (!isSlowing) return;
-
         isSlowing = false;
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = defaultFixedDeltaTime;
-
-        if (currentSlowTime <= 0f)
-            cooldownTimer = cooldown;
+        foreach (ISlowable s in slowables) s.RestoreSpeed();
+        if (currentSlowTime <= 0f) cooldownTimer = cooldown;
     }
 
     private void OnDisable()
     {
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = defaultFixedDeltaTime;
+        StopSlow();
     }
 
-    public bool IsSlowing()
+    // Ajouter un objet a la whitelist dynamiquement (utile pour les rooms)
+    public void RegisterTarget(GameObject go)
     {
-        return isSlowing;
+        if (go == null || slowTargets.Contains(go)) return;
+        slowTargets.Add(go);
+        ISlowable[] found = go.GetComponentsInChildren<ISlowable>();
+        slowables.AddRange(found);
     }
 
-    public float GetSlowPercent()
-    {
-        return maxDuration <= 0f ? 0f : currentSlowTime / maxDuration;
-    }
-
-    public float GetCooldownRemaining()
-    {
-        return Mathf.Max(0f, cooldownTimer);
-    }
+    // Getters pour UI
+    public bool IsSlowing() => isSlowing;
+    public float GetSlowPercent() => maxDuration <= 0f ? 0f : currentSlowTime / maxDuration;
+    public float GetCooldownRemaining() => Mathf.Max(0f, cooldownTimer);
 }

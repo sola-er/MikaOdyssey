@@ -1,13 +1,8 @@
 using UnityEngine;
 
-public class AutoMover : MonoBehaviour
+public class AutoMover : MonoBehaviour, ISlowable
 {
-    public enum MoveMode
-    {
-        PingPong,
-        Loop,
-        OneWay
-    }
+    public enum MoveMode { PingPong, Loop, OneWay }
 
     [Header("Movement")]
     [SerializeField] private Vector3 localOffset = new Vector3(0f, 3f, 0f);
@@ -26,20 +21,22 @@ public class AutoMover : MonoBehaviour
     private int direction = 1;
     private float journeyLength;
 
+    // Vitesse effective - modifiee par ISlowable
+    private float effectiveSpeed;
+
     private void Start()
     {
         startPos = useLocalPosition ? transform.localPosition : transform.position;
         endPos = startPos + localOffset;
         journeyLength = Vector3.Distance(startPos, endPos);
+        effectiveSpeed = speed;
 
-        if (playOnStart)
-            StartMoving();
+        if (playOnStart) StartMoving();
     }
 
     private void Update()
     {
-        if (!isMoving)
-            return;
+        if (!isMoving) return;
 
         if (startDelay > 0f)
         {
@@ -47,76 +44,56 @@ public class AutoMover : MonoBehaviour
             return;
         }
 
-        if (journeyLength <= 0.001f)
-            return;
+        if (journeyLength <= 0.001f) return;
 
-        timer += (Time.deltaTime * speed * direction) / journeyLength;
+        // Utilise effectiveSpeed au lieu de speed directement
+        timer += (Time.deltaTime * effectiveSpeed * direction) / journeyLength;
 
         switch (moveMode)
         {
             case MoveMode.PingPong:
-                if (timer >= 1f)
-                {
-                    timer = 1f;
-                    direction = -1;
-                }
-                else if (timer <= 0f)
-                {
-                    timer = 0f;
-                    direction = 1;
-                }
+                if (timer >= 1f) { timer = 1f; direction = -1; }
+                else if (timer <= 0f) { timer = 0f; direction = 1; }
                 break;
-
             case MoveMode.Loop:
-                if (timer >= 1f)
-                    timer = 0f;
+                if (timer >= 1f) timer = 0f;
                 break;
-
             case MoveMode.OneWay:
-                if (timer >= 1f)
-                {
-                    timer = 1f;
-                    isMoving = false;
-                }
+                if (timer >= 1f) { timer = 1f; isMoving = false; }
                 break;
         }
 
         Vector3 targetPos = Vector3.Lerp(startPos, endPos, timer);
-
-        if (useLocalPosition)
-            transform.localPosition = targetPos;
-        else
-            transform.position = targetPos;
+        if (useLocalPosition) transform.localPosition = targetPos;
+        else transform.position = targetPos;
     }
 
-    public void StartMoving()
+    // --- ISlowable ---
+    public void SlowDown(float factor)
     {
-        isMoving = true;
+        effectiveSpeed = speed * factor;
     }
 
-    public void StopMoving()
+    public void RestoreSpeed()
     {
-        isMoving = false;
+        effectiveSpeed = speed;
     }
+
+    // --- API publique ---
+    public void StartMoving() => isMoving = true;
+    public void StopMoving() => isMoving = false;
 
     public void ResetToStart()
     {
-        timer = 0f;
-        direction = 1;
-
-        if (useLocalPosition)
-            transform.localPosition = startPos;
-        else
-            transform.position = startPos;
+        timer = 0f; direction = 1;
+        if (useLocalPosition) transform.localPosition = startPos;
+        else transform.position = startPos;
     }
 
     public void MoveToEnd()
     {
         timer = 1f;
-
-        if (useLocalPosition)
-            transform.localPosition = endPos;
-        else
-            transform.position = endPos;
+        if (useLocalPosition) transform.localPosition = endPos;
+        else transform.position = endPos;
     }
 }
