@@ -34,6 +34,9 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
 
     Vector3 moveDirection;
 
+    // camera stuff
+    Vector3 RotationDirection;
+
     Rigidbody rb;
 
     int jumpCount;
@@ -74,10 +77,10 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
             rb.linearDamping = 0;
         }
         
-        if (moveDirection != Vector3.zero) // we need to tweak this
+        if (RotationDirection != Vector3.zero) // we need to tweak this // before inputdir it was moveDirection != Vector3.zero
         {
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            Quaternion targetRotation = Quaternion.LookRotation(RotationDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * 100 * Time.deltaTime);
         }
         SpeedLimit();
         Sprint();
@@ -110,6 +113,16 @@ public class PlayerAction : MonoBehaviour // i need to put headers to seperate t
             else
                 rb.AddForce(projectedVector.normalized * speed * 10f * 0.5f, ForceMode.Force); // to slow if hes in the air
         }
+
+        Vector3 camForward = orientation.forward;
+        Vector3 camRight = orientation.right;
+
+        camForward.y = 0;
+        camRight.y = 0;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        RotationDirection = camForward * verticalInput + camRight * horizontalInput;
     }
 
     private void SpeedLimit() 
