@@ -34,7 +34,8 @@ public class MovementWithGravity : MonoBehaviour
     [SerializeField]
 	Transform playerInputSpace = default;
 
-    [SerializeField] private float mouseSensitivity = 2f;
+    [SerializeField] private Transform modelTransform;
+    [SerializeField] private float rotationSpeed = 10f;
 
     private Vector3 velocity, desiredVelocity;
     Rigidbody rb;
@@ -87,6 +88,20 @@ public class MovementWithGravity : MonoBehaviour
         }
         desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
         desiredJump |= Input.GetButtonDown("Jump");
+
+        if (desiredVelocity.sqrMagnitude > 0.01f)
+        {
+            Vector3 moveDir = (rightAxis * playerInput.x + forwardAxis * playerInput.y).normalized;
+            if (moveDir != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDir, upAxis) * Quaternion.Euler(0, 180, 0);
+                modelTransform.rotation = Quaternion.Slerp(
+                    modelTransform.rotation,
+                    targetRotation,
+                    rotationSpeed * Time.deltaTime
+                );
+            }
+        }
     }
     private void FixedUpdate()
     {
