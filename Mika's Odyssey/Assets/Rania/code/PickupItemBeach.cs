@@ -13,6 +13,7 @@ public class PickupItem : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+
         // Beach
         if (BeachManager.Singleton != null && itemType == ItemType.Shell)
         {
