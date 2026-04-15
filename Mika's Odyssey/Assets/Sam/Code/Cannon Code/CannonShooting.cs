@@ -9,10 +9,16 @@ public class CannonShooting : MonoBehaviour, IInteractable
     [Header("Mode")]
     [SerializeField]
     bool cannonControls = true;
+
+    [Header("Ui Related")]
+    [SerializeField]
+    GameObject forceUi;
   
     void Update()
     {
         if (cannonControls) { Controls(); }
+        else if (!cannonControls)
+            forceUi.SetActive(false);
 
         if (canonON) // quand je vais faire le mode canon, je vais faire une touche speciale pour partir du canon
         projection.TrajectorySimulation(projectillePrefab, ProjectilleSpawn.position, ProjectilleSpawn.forward * shootForce);
@@ -43,7 +49,7 @@ public class CannonShooting : MonoBehaviour, IInteractable
 
     private void Controls() // ajouter le bouton escape pour switcher de controls
     {
-
+        forceUi.SetActive(true);
          //////////////// (Up, Down)
         if (Input.GetKey(KeyCode.S))
         {
