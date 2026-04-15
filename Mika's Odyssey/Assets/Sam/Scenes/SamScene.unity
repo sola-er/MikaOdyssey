@@ -430,6 +430,123 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractions
   boutonInteractif: 101
   promptUI: {fileID: 0}
+--- !u!1001 &405582135
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 398075228483626357, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 453385129226577167, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1965686897366448107, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1965686897366448107, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 894149132}
+    - target: {fileID: 1965686897366448107, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdatedForce
+      objectReference: {fileID: 0}
+    - target: {fileID: 2993998929056590795, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_Name
+      value: CanonForceUi
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930667092008882738, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3871de99662992c47aee71cbcd24a5eb, type: 3}
 --- !u!1 &454441618
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,6 +659,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454441618}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &894149132 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8632119338989950117, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+  m_PrefabInstance: {fileID: 7963724431206255609}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dcce1b804da68b459fa5aabbfc8c1ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CannonShooting
 --- !u!1 &1205941129
 GameObject:
   m_ObjectHideFlags: 0
@@ -6945,3 +7073,4 @@ SceneRoots:
   - {fileID: 1665949930629593940}
   - {fileID: 1304454957972202778}
   - {fileID: 116701462919192711}
+  - {fileID: 405582135}

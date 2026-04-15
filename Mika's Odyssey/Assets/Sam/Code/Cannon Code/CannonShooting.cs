@@ -106,4 +106,10 @@ public class CannonShooting : MonoBehaviour, IInteractable
         
       
     }
+
+    public void UpdatedForce(float sliderNewValue) // to update the force in the UI
+    {
+        shootForce = sliderNewValue;
+        Debug.Log("Cannon Force set to:" + shootForce);
+    }
 }
