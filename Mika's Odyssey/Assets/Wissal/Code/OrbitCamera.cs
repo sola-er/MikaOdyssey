@@ -52,7 +52,6 @@ public class OrbitCamera : MonoBehaviour
         Vector3 lookPosition = focusPoint - lookDirection * distance; // a ameliorer avec un tire de raycast
         transform.SetPositionAndRotation(lookPosition, lookRotation);
     }
-
     private void UpdateGravityAlignment()
     {
         Vector3 fromUp = gravityAlignment * Vector3.up;
@@ -70,7 +69,6 @@ public class OrbitCamera : MonoBehaviour
                 gravityAlignment, newAlignment, maxAngle / angle
                 );
     }
-
     void UpdateFocusPoint()
     {
         Vector3 targetPoint = focus.position;
@@ -93,13 +91,12 @@ public class OrbitCamera : MonoBehaviour
     void ManualRotation()
     {
         Vector2 input = new Vector2(
-            Input.GetAxis("Mouse Y") * mouseSensitivity, Input.GetAxis("Mouse X") * mouseSensitivity);
+            -Input.GetAxis("Mouse Y") * mouseSensitivity, Input.GetAxis("Mouse X") * mouseSensitivity);
         const float e = 0.001f;
         if (input.x < -e || input.x > e || input.y < -e || input.y > e)
         {
             orbitAngles += rotationSpeed * Time.unscaledDeltaTime * input;
             orbitAngles = new Vector2(Mathf.Clamp(orbitAngles.x, -89, 89), orbitAngles.y);
         }
-            
     }
 }
