@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Rania/scenes/House.unity
     guid: 6eede0ee6f58c484ea838159f86b1d6b
+  - enabled: 1
+    path: Assets/Adam/Scenes/Rescale.unity
+    guid: da96040f60f18df42be8e283474d3ee7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
