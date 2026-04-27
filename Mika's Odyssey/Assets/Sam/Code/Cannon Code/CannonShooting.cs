@@ -39,6 +39,7 @@ public class CannonShooting : MonoBehaviour, IInteractable
     [SerializeField] KeyCode shootingKeycode = KeyCode.None; // a changer 
 
     [Header("Cannon part Movement")]
+    [SerializeField] GameObject Player;
     [SerializeField] Transform rightwheel;
     [SerializeField] Transform leftwheel;
     [SerializeField] Transform BarrelPivot;
@@ -93,6 +94,7 @@ public class CannonShooting : MonoBehaviour, IInteractable
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             cannonControls = false;
+            Player.SetActive(true);
             
         }
     }
@@ -108,6 +110,7 @@ public class CannonShooting : MonoBehaviour, IInteractable
             //    //spawned.Init(ProjectilleSpawn.forward * shootForce, false);
             //}
             canonON = true;
+        Player.SetActive(false);
             
         
       
