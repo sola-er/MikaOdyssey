@@ -102,7 +102,7 @@ public class ThirdPersonCamera : MonoBehaviour
         forward.Normalize();
 
         if (forward != Vector3.zero)
-            orientation.rotation = Quaternion.LookRotation(forward);
+            orientation.rotation = Quaternion.LookRotation(forward); // sans le negatif
     }
 
     public Vector3 GetCameraForward()
@@ -113,4 +113,5 @@ public class ThirdPersonCamera : MonoBehaviour
     }
 
     public float GetYaw() => yaw;
+
 }
