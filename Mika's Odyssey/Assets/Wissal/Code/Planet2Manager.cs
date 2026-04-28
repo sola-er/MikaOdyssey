@@ -10,10 +10,7 @@ public class Planet2Manager : MonoBehaviour
 
     private void Awake()
     {
-        if (Singleton == null)
-            Singleton = this;
-        else
-            Destroy(gameObject);
+        Singleton = this;
         TrashCollecting.collectedTrashCounter = 0;
         RocksTriggerZone.collectedRocksCounter = 0;
     }

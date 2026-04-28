@@ -8,10 +8,7 @@ public class SpaceGameOverManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Singleton == null)
-            Singleton = this;
-        else
-            Destroy(gameObject);
+        Singleton = this;
         gameOverUI.SetActive(false);
     }
 
@@ -20,8 +17,7 @@ public class SpaceGameOverManager : MonoBehaviour
         gameOverUI.SetActive(true);
         Time.timeScale = 0f;
     }
-
-    public void Retry()
+    public static void Retry()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
