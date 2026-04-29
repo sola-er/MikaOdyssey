@@ -14,10 +14,7 @@ public class Planet1Manager : MonoBehaviour
 
     private void Awake()
     {
-        if (Singleton == null)
-            Singleton = this;
-        else
-            Destroy(gameObject);
+        Singleton = this;
     }
     public void AdvanceQuest(MochiQuestState newState)
     {
