@@ -45,6 +45,8 @@ public class CannonShooting : MonoBehaviour, IInteractable
     [SerializeField] Transform BarrelPivot;
     [SerializeField] float rotatespeed = 2;
 
+    
+
     float currentRotationY;
     public float sensitivity = 50f;
 
@@ -111,6 +113,7 @@ public class CannonShooting : MonoBehaviour, IInteractable
             //}
             canonON = true;
         Player.SetActive(false);
+        
             
         
       
