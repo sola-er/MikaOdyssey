@@ -1,12 +1,30 @@
 using UnityEngine;
-
-public class RaisinCollecting : MonoBehaviour, IInteractable
+public class RaisinOrbit : MonoBehaviour
 {
-    public void Interact()
+    [SerializeField] private Transform planet;
+    [SerializeField] private float orbitRadius = 20f;
+    [SerializeField] private float orbitSpeed = 30f;
+    [SerializeField] private float orbitHeight = 5f;
+    private float angle = 0f;
+    private Vector3 up;
+    private Vector3 right;
+    private Vector3 forward;
+
+    private void Start()
     {
-        if (Planet0Manager.Singleton.bliQuest != BliQuestState.FinalQuest)
-            return;
-        Planet0Manager.Singleton.AdvanceQuest(BliQuestState.Complete);
-        gameObject.SetActive(false);
+        up = CustomGravity.GetUpAxis(planet.position);
+        right = Vector3.Cross(up, Vector3.forward).normalized;
+        if (right == Vector3.zero)
+            right = Vector3.Cross(up, Vector3.right).normalized;
+        forward = Vector3.Cross(right, up).normalized;
+    }
+
+    private void Update()
+    {
+        angle += orbitSpeed * Time.deltaTime;
+        transform.position = planet.position
+            + up * orbitHeight
+            + (Mathf.Cos(angle * Mathf.Deg2Rad) * right
+            + Mathf.Sin(angle * Mathf.Deg2Rad) * forward) * orbitRadius;
     }
 }
