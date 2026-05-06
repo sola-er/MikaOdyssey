@@ -8,15 +8,26 @@ public class PressurePlate : MonoBehaviour
 
     [Header("Action")]
     [SerializeField] private DoorController targetDoor;
-    [SerializeField] private bool stayOpen = false; // reste ouverte meme si on part
+    [SerializeField] private bool stayOpen = false;
+
+    [Header("Couleurs")]
+    [SerializeField] private Color inactiveColor = Color.red;
+    [SerializeField] private Color activeColor = Color.green;
+    [SerializeField] private Color partialColor = new Color(1f, 0.5f, 0f); // orange
 
     [Header("Debug")]
     [SerializeField] private bool showDebug = true;
 
-    // Objets actuellement sur la plaque
     private Dictionary<Rigidbody, float> objectsOnPlate = new Dictionary<Rigidbody, float>();
     private float totalMass = 0f;
     private bool isActivated = false;
+    private Renderer plateRenderer;
+
+    private void Start()
+    {
+        plateRenderer = GetComponent<Renderer>();
+        UpdateColor();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -45,9 +56,10 @@ public class PressurePlate : MonoBehaviour
             totalMass += m;
 
         if (showDebug)
-            Debug.Log($"[PressurePlate] Masse totale : {totalMass:F2} / seuil : {massThreshold}");
+            Debug.Log($"[PressurePlate] Masse : {totalMass:F2} / seuil : {massThreshold}");
 
         CheckActivation();
+        UpdateColor();
     }
 
     private void CheckActivation()
@@ -66,7 +78,18 @@ public class PressurePlate : MonoBehaviour
         }
     }
 
-    // Lecture publique pour UI ou autres scripts
+    private void UpdateColor()
+    {
+        if (plateRenderer == null) return;
+
+        if (isActivated)
+            plateRenderer.material.color = activeColor;         // vert  - seuil atteint
+        else if (totalMass > 0f)
+            plateRenderer.material.color = partialColor;        // orange - quelque chose dessus mais pas assez lourd
+        else
+            plateRenderer.material.color = inactiveColor;       // rouge - vide
+    }
+
     public float GetTotalMass() => totalMass;
     public float GetThreshold() => massThreshold;
     public bool IsActivated() => isActivated;
