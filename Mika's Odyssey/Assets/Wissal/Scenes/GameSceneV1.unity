@@ -7728,7 +7728,7 @@ MonoBehaviour:
   focusCentering: 0.5
   rotationSpeed: 90
   upAlignmentSpeed: 360
-  mouseSensitivity: 0.5
+  mouseSensitivity: 2.5
 --- !u!114 &2044896917
 MonoBehaviour:
   m_ObjectHideFlags: 0

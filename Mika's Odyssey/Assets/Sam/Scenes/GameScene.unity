@@ -358,6 +358,11 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &27720955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 706487404642811151, guid: 1c3a8c73f5a5bcb488e8dca45c1a18c5, type: 3}
+  m_PrefabInstance: {fileID: 1686902690}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &54718344
 GameObject:
   m_ObjectHideFlags: 0
@@ -2665,6 +2670,87 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1574983690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &743452846
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 454498939696360190, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_Name
+      value: Cannon (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 454498939696360190, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1433776919892506459, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: obstaclesParent
+      value: 
+      objectReference: {fileID: 1574983690}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 19.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.64882684
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6500009
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.2774792
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.282007
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -89.622
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 81.232
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170063769014081864, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -127.841
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632119338989950117, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 1229658668}
+    - target: {fileID: 8632119338989950117, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: forceUi
+      value: 
+      objectReference: {fileID: 1514908343}
+    - target: {fileID: 8632119338989950117, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: cannonControls
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632119338989950117, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
+      propertyPath: canonAngleClamp
+      value: -120
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1db616f6f4246fa4eb1385778be49c32, type: 3}
 --- !u!1 &745741733
 GameObject:
   m_ObjectHideFlags: 0
@@ -5144,10 +5230,10 @@ MonoBehaviour:
   actionToPerform:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1559692685}
-        m_TargetAssemblyTypeName: steppingplatform, Assembly-CSharp
-        m_MethodName: InterractiveTest
-        m_Mode: 1
+      - m_Target: {fileID: 27720955}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7390,6 +7476,7 @@ SceneRoots:
   - {fileID: 446147026}
   - {fileID: 916687251}
   - {fileID: 1959615366}
+  - {fileID: 743452846}
   - {fileID: 2020843355}
   - {fileID: 1659430020}
   - {fileID: 200354737}
