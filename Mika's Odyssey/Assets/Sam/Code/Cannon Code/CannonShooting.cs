@@ -37,6 +37,7 @@ public class CannonShooting : MonoBehaviour, IInteractable
     [SerializeField] float shootForce;
     [SerializeField] Transform ProjectilleSpawn;
     [SerializeField] KeyCode shootingKeycode = KeyCode.None; // a changer 
+    [SerializeField] float canonAngleClamp = -99;
 
     [Header("Cannon part Movement")]
     [SerializeField] GameObject Player;
@@ -63,7 +64,7 @@ public class CannonShooting : MonoBehaviour, IInteractable
             currentRotationY += rotatespeed * Time.deltaTime;
         }
 
-        currentRotationY = Mathf.Clamp(currentRotationY, -99f, 0f); // on veut pas que sa aille plus bas que le sol
+        currentRotationY = Mathf.Clamp(currentRotationY, canonAngleClamp, 0f); // on veut pas que sa aille plus bas que le sol
         BarrelPivot.localRotation = Quaternion.Euler(0, currentRotationY, 0);
         ////////////////////
 
