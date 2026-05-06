@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     private void UpdateTargetRotation()
     {
         if (inputDirection.sqrMagnitude < 0.01f)
-          return;
+            return;
 
         Vector3 camForward = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up).normalized;
         Vector3 camRight   = Vector3.ProjectOnPlane(playerCamera.transform.right, Vector3.up).normalized;

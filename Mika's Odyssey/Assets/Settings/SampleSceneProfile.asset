@@ -30,7 +30,7 @@ MonoBehaviour:
     m_Value: 65472
   tint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 0.13189746, g: 0.3310006, b: 0.49056602, a: 1}
   highQualityFiltering:
     m_OverrideState: 1
     m_Value: 1
@@ -91,7 +91,6 @@ MonoBehaviour:
   m_Name: SampleSceneProfile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 6347581587940781474}
   - {fileID: 849379129802519247}
   - {fileID: -7893295128165547882}
   - {fileID: 7391319092446245454}
@@ -218,7 +217,7 @@ MonoBehaviour:
     m_Value: 2
   intensity:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.4
   clamp:
     m_OverrideState: 0
     m_Value: 0.05
