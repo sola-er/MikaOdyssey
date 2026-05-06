@@ -46,6 +46,18 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void LateUpdate()
     {
+        // Si le jeu est en pause - libere le curseur et ne bouge pas la camera
+        if (Time.timeScale == 0f)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            return;
+        }
+
+        // Jeu actif - curseur locke
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         if (target == null) return;
 
         // Lecture souris
@@ -102,7 +114,7 @@ public class ThirdPersonCamera : MonoBehaviour
         forward.Normalize();
 
         if (forward != Vector3.zero)
-            orientation.rotation = Quaternion.LookRotation(forward); // sans le negatif
+            orientation.rotation = Quaternion.LookRotation(forward);
     }
 
     public Vector3 GetCameraForward()
@@ -113,5 +125,4 @@ public class ThirdPersonCamera : MonoBehaviour
     }
 
     public float GetYaw() => yaw;
-
 }
