@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
         rb.freezeRotation = true; // CRITICAL: prevents physics spin
 
-        Cursor.lockState = CursorLockMode.Locked;
+       // Cursor.lockState = CursorLockMode.Locked;
     }
 
     private Quaternion targetRotation;

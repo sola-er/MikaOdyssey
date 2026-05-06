@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Required for restarting
+using UnityEngine.SceneManagement; 
 
 public class GameOverManager : MonoBehaviour
 {
