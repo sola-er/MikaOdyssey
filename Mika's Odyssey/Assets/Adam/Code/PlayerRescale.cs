@@ -132,7 +132,7 @@ public class PlayerRescale : MonoBehaviour
         // Collider
         capsule.height = baseHeight * scale;
         capsule.radius = baseRadius * scale;
-        capsule.center = baseCenter * scale;
+        capsule.center = new Vector3(baseCenter.x * scale, baseCenter.y, baseCenter.z * scale);
 
         // Masse cubique : m = m0 * s^3 (loi de volume)
         rb.mass = baseMass * Mathf.Pow(scale, 3f);
