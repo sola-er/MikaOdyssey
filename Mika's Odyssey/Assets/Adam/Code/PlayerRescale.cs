@@ -42,7 +42,6 @@ public class PlayerRescale : MonoBehaviour
 
     private static readonly Collider[] _overlapBuffer = new Collider[16];
 
-    // -------------------------------------------------------
 
     private void Reset()
     {
@@ -61,7 +60,7 @@ public class PlayerRescale : MonoBehaviour
             Debug.LogWarning("[PlayerRescale] solidMask n'est pas assigne. " +
                              "L'anti-clipping ne fonctionnera pas correctement.");
 
-        // Cacher les dims de base
+        // instancier(les avoir en mémoire quoi) les dims de base
         baseHeight = capsule.height;
         baseRadius = capsule.radius;
         baseCenter = capsule.center;
@@ -79,7 +78,6 @@ public class PlayerRescale : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3)) TrySetState(SizeState.Big);
     }
 
-    // -------------------------------------------------------
 
     public void TrySetState(SizeState target)
     {
@@ -142,7 +140,6 @@ public class PlayerRescale : MonoBehaviour
             playerController.playerHeight = basePlayerHeight * scale;
     }
 
-    // -------------------------------------------------------
 
     private float GetScale(SizeState state) => state switch
     {
@@ -164,8 +161,7 @@ public class PlayerRescale : MonoBehaviour
 
         // Le sommet apres agrandissement
         Vector3 top = feet + Vector3.up * height;
-
-        // On teste une sphere au sommet seulement
+      
         // Suffit pour detecter un plafond, et ignore completement le sol
         int hits = Physics.OverlapSphereNonAlloc(top, radius, _overlapBuffer, solidMask);
 

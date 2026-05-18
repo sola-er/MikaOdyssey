@@ -54,7 +54,7 @@ public class ThirdPersonCamera : MonoBehaviour
             return;
         }
 
-        // Jeu actif - curseur locke
+        // Jeu actif - curseur lock
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
