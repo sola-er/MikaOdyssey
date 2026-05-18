@@ -14,9 +14,9 @@ public class WindZone : MonoBehaviour
         if (rb == null) return;
 
         // Plus Mika est lourd, moins le vent l'affecte
-        // Small (~0.22) : presque 100% de la force
-        // Normal (~1.0) : force reduite
-        // Big (~4.1)   : presque immunise
+        // Small   : presque 100% de la force
+        // Normal  : force reduite
+        // Big     : presque immunise
         float massFactor = 1f - Mathf.Clamp01(rb.mass / referenceMaxMass);
         float effectiveForce = windForce * massFactor;
 
